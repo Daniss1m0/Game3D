@@ -1,0 +1,132 @@
+\doxysection{events.\+h}
+\hypertarget{events_8h_source}{}\label{events_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/events.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/events.h}}
+\mbox{\hyperlink{events_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <any>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_base_class_8h}{Engine/BaseClass.h}}>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng}{eng}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//\ Enumerator\ zdarzeń.}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{EventType}}\ :\ std::uint32\_t}
+\DoxyCodeLine{00017\ \ \ \ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b}{Invalid}}\ =\ 0,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a06933067aafd48425d67bcb01bba5cb6}{Update}},}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a65a1aa093fcf3acd50b318f1942c02f5}{KeyPress}},}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855af60ef42c86a517b538d351180f216684}{MousePress}},}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a6924f81750ac471df87fed683bcea516}{MouseWheel}}}
+\DoxyCodeLine{00023\ \ \ \ \ \};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ Dane\ dla\ zdarzenia.}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structeng_1_1_event_data}{EventData}}}
+\DoxyCodeLine{00027\ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_event_data_a41ec58db8231ebc1259eaa5923a8708d}{EventData}}(\textcolor{keyword}{const}\ std::any\&\ data);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_event_data_a41ec58db8231ebc1259eaa5923a8708d}{EventData}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dane\ właściwe.}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ std::any\ \mbox{\hyperlink{structeng_1_1_event_data_a56cf4208f6ca865c2b0c008eb1c919c0}{Data}}\ =\ \{\};}
+\DoxyCodeLine{00033\ \ \ \ \ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ 'Haczyk'\ dla\ zdarzeń.\ Posiada\ funkcję\ zwrotną,}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ która\ jest\ uruchamiana\ gdy\ wydarzenie\ jest}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ uruchamiane.}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structeng_1_1_hook}{Hook}}}
+\DoxyCodeLine{00039\ \ \ \ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_hook_abfaca9702b7da65c096eeb44af554feb}{Hook}}(\textcolor{keyword}{const}\ std::string\&\ name,\ \textcolor{keyword}{const}\ std::function<\textcolor{keywordtype}{void}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structeng_1_1_event_data}{EventData}}\&)>\&\ callback);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_hook_abfaca9702b7da65c096eeb44af554feb}{Hook}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Identyfikator\ dla\ haczyka.}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structeng_1_1_hook_a7b7ea1e88350759e5191ca4a9de06018}{Name}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Funkcja\ zwrotna.}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ std::function<void(\textcolor{keyword}{const}\ \mbox{\hyperlink{structeng_1_1_event_data}{EventData}}\&)>\ \mbox{\hyperlink{structeng_1_1_hook_a418c615f3204a5398186d1bcc9200c4d}{Callback}}\ =\ \{\};}
+\DoxyCodeLine{00048\ \ \ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ Zdarzenie,\ posiada\ haczyki.}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structeng_1_1_event}{Event}}}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_event_aa3f17fa4636a77258932be989735da64}{Event}}(\mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{EventType}}\ type,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structeng_1_1_hook}{Hook}}\&\ hook);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structeng_1_1_event_aa3f17fa4636a77258932be989735da64}{Event}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Typ\ zdarzenia.}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{EventType}}\ \mbox{\hyperlink{structeng_1_1_event_a8b272a233ef9ae5f5df7ec1c5263e311}{Type}}\ =\ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b}{EventType::Invalid}};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wszystkie\ haczyki.}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ std::vector<Hook>\ \mbox{\hyperlink{structeng_1_1_event_a8c9bfc2bd2c0d5b284c35c4801eaa593}{Hooks}}\ =\ \{\};}
+\DoxyCodeLine{00061\ \ \ \ \ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ Klasa\ bazowa\ dla\ klas\ zdarzeniowych.}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_event_base}{EventBase}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00065\ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_base_af0382414b1470ac0159d39904860baab}{EventBase}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00068\ \ \ \ \ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ Za\ każdym\ razem,\ gdy\ uruchamiane\ jest}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ wydarzenie,\ ta\ klasa\ (musi\ być\ przypięta\ pod\ źródło)}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ reaguje\ i\ uruchamia\ funkcje\ zwrotne\ haczyków.}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_event_base}{EventBase}}}
+\DoxyCodeLine{00074\ \ \ \ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_event_source}{EventSource}};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_receiver_a8739821c6de4cb21f06f8e47d33ada8a}{EventReceiver}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dodaje\ nowy\ haczyk.}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_event_receiver_a42018fbf70e0db1204dc23615a9194c3}{AddHook}}(\mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{EventType}}\ type,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structeng_1_1_hook}{Hook}}\&\ hook);}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wszystkie\ zdarzenia\ na\ które\ nasłuchuje\ ten\ odbiornik.}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ std::unordered\_map<EventType,\ Event>\ m\_Events\ =\ \{\};}
+\DoxyCodeLine{00085\ \ \ \ \ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ Z\ pomocą\ tej\ klasy\ można\ uruchamiać\ zdarzenia.}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ Posiada\ odbiorniki,\ które\ z\ kolei\ posiadają}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ haczyki,\ które\ uruchamiają\ kod.}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_event_source}{EventSource}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_event_base}{EventBase}}}
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_source_a4be8e3a29decdf8a8f1248622e857430}{EventSource}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dodaje\ odbiornik\ który\ od\ teraz\ będzie\ nasłuchiwać\ tego\ źródła.}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}*\ \mbox{\hyperlink{classeng_1_1_event_source_af70df5951c5696e26624fa7a07c22d4b}{AddReceiver}}(\mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}*\ rec);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Uruchamia\ zdarzenie\ z\ podanymi\ wartościami.}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_event_source_adf161930c3f4142cf79f9e5f61b9057c}{CallEvent}}(\mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{EventType}}\ type,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structeng_1_1_event_data}{EventData}}\&\ data);}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wszystkie\ odbiorniki\ które\ nasłuchują\ tego\ źródła.}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ std::vector<EventReceiver*>\ m\_Receivers\ =\ \{\};}
+\DoxyCodeLine{00103\ \ \ \ \ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\ Ta\ klasa\ umożliwia\ innej\ klasie\ odbieranie\ i\ nadawanie}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//\ zdarzeń.}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_event_interactive}{EventInteractive}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_event_base}{EventBase}}}
+\DoxyCodeLine{00108\ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_interactive_a609a2ec127ed2866d4b20adf467944c2}{EventInteractive}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ odbiornik\ zdarzeń\ dla\ tej\ klasy.}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}\&\ \mbox{\hyperlink{classeng_1_1_event_interactive_a217a1316b678891005bded084c5277ac}{GetReceiver}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classeng_1_1_event_interactive_a9e31ded25fb619a2c1687eaa181d077a}{m\_Receiver}};\ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ nadajnik\ zdarzeń\ dla\ tej\ klasy.}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classeng_1_1_event_source}{EventSource}}\&\ \mbox{\hyperlink{classeng_1_1_event_interactive_af5e908fb88bb6b8c6e5671bf2cb143d2}{GetSource}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classeng_1_1_event_interactive_a90323a4e931535fb27d685d91ab0beb7}{m\_Source}};\ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Odbiornik\ zdarzeń\ dla\ tej\ klasy.}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}\ \mbox{\hyperlink{classeng_1_1_event_interactive_a9e31ded25fb619a2c1687eaa181d077a}{m\_Receiver}};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nadajnik\ zdarzeń\ dla\ tej\ klasy.}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_source}{EventSource}}\ \mbox{\hyperlink{classeng_1_1_event_interactive_a90323a4e931535fb27d685d91ab0beb7}{m\_Source}};}
+\DoxyCodeLine{00124\ \ \ \ \ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,38 @@
+\doxysection{Renderer.\+h}
+\hypertarget{_renderer_8h_source}{}\label{_renderer_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/Renderer.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/Renderer.h}}
+\mbox{\hyperlink{_renderer_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <glm/glm.hpp>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <glad/glad.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <glfw/glfw3.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{buffers_8h}{Engine/internal/buffers.h}}>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_base_class_8h}{Engine/BaseClass.h}}>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng}{eng}}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//\ Używane\ do\ wyświetlania\ obiektów.\ Singleton.}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00015\ \ \ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_renderer_a8ed430e7981002a7c198dd4b158f76e6}{Renderer}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}\&\ \mbox{\hyperlink{classeng_1_1_renderer_a4951f60112a15244fa795a294a7162dc}{operator=}}(\mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ instancję\ klasy.}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}*\ \mbox{\hyperlink{classeng_1_1_renderer_a62402a8160d89b9734edf30d22e92244}{Get}}();}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Czyści\ ekran.}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_renderer_ac36dd4ef6eb95212dad37fc2abf52d1e}{Clear}}(\textcolor{keyword}{const}\ glm::fvec4\&\ color);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rysuje\ z\ bufora.}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_renderer_a888f58fd8a00865a62546735e36f8373}{Draw}}(std::uint32\_t\ vao);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00030\ \ \ \ \ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \}}
+
+\end{DoxyCode}

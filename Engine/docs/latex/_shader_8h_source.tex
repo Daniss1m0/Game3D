@@ -1,0 +1,94 @@
+\doxysection{Shader.\+h}
+\hypertarget{_shader_8h_source}{}\label{_shader_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/Shader.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/Shader.h}}
+\mbox{\hyperlink{_shader_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <glad/glad.h>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_base_class_8h}{Engine/BaseClass.h}}>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng}{eng}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374}{ShaderType}}\ :\ std::uint32\_t}
+\DoxyCodeLine{00017\ \ \ \ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b}{Invalid}}\ =\ 0,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374ab22b929ba52471a02d18bb3a4e4472e6}{Vertex}}\ =\ 1,}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374a37d01b98065725fe3a1d30acf3a0064a}{Fragment}}\ =\ 2}
+\DoxyCodeLine{00021\ \ \ \ \ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ Shader\ który\ steruje\ rysowaniem\ obiektów.}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_shader}{Shader}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00025\ \ \ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_shader_a7cf991e1b3b85e4e80096324069dbfd9}{Shader}}(\mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374}{ShaderType}}\ type,\ \textcolor{keyword}{const}\ std::string\&\ filePath);}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_shader_a7cf991e1b3b85e4e80096324069dbfd9}{Shader}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_shader_a63ca5bad6cd55fca02e4427a6f7f32f4}{\string~Shader}}();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ładuje\ kod\ z\ pliku.}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ std::optional<std::string>\ \mbox{\hyperlink{classeng_1_1_shader_abb08bec009a9e1bae9d0230ed1910267}{LoadFromFile}}(\textcolor{keyword}{const}\ std::string\&\ filePath);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ identyfikator\ shadera.}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ std::uint32\_t\ \mbox{\hyperlink{classeng_1_1_shader_a8b8d415dbb49c4f6f46b578b043384a6}{GetId}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_Id;\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ustawia\ identyfikator\ programu\ tego\ shadera.}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_shader_a121e085dd9ef26a6a548b3b65a164962}{SetParentProgram}}(std::uint32\_t\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Typ,\ czyli\ albo\ shader\ werteksów\ albo\ fragmentów.}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374}{ShaderType}}\ m\_Type\ =\ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374a4bbb8f967da6d1a610596d7257179c2b}{ShaderType::Invalid}};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Identyfikator\ shadera.}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ std::uint32\_t\ m\_Id\ =\ 0;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Identyfikator\ programu.}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ std::uint32\_t\ m\_ProgramId\ =\ 0;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Kod\ shadera.}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ std::string\ m\_Code\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ścieżka\ do\ pliku\ shadera\ (jeżeli\ pobrane\ z\ niego).}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ std::optional<std::string>\ m\_FilePath\ =\ \{\};}
+\DoxyCodeLine{00055\ \ \ \ \ \};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ Zbiór\ dwóch\ shaderów\ (vertex\ +\ fragment).}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_program}{Program}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00059\ \ \ \ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_program_ad1ce87fcfa6e6f48a5e858efd7c32c35}{Program}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classeng_1_1_shader}{Shader}}\&\ vertex,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classeng_1_1_shader}{Shader}}\&\ fragment);}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_program_ad1ce87fcfa6e6f48a5e858efd7c32c35}{Program}}(\textcolor{keyword}{const}\ std::string\&\ folderPath);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_program_ad1ce87fcfa6e6f48a5e858efd7c32c35}{Program}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_program_a0e54f736a3c934d3729a0be0f94e7365}{\string~Program}}();}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{classeng_1_1_program_a967bdc95cf9e42538df3826dc1379a15}{GetId}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_Id;\ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Binduje\ program\ do\ użycia.}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_program_a09c179f1da27da9d2ba69c67aae1389b}{Bind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Odbindowywuje\ program.}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_program_a94ae06cf0eb984dc9997b9b8b7eeea30}{Unbind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Identyfikator\ programu.}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ std::uint32\_t\ m\_Id\ =\ 0;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Shader\ od\ werteksów.}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_shader}{Shader}}\ m\_VertexShader;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Shader\ od\ fragmentów.}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_shader}{Shader}}\ m\_FragmentShader;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ścieżka\ do\ folderu\ shaderów\ (jeżeli\ pobrane\ z\ niego).}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ std::optional<std::string>\ m\_FolderPath\ =\ \{\};}
+\DoxyCodeLine{00086\ \ \ \ \ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \}}
+
+\end{DoxyCode}

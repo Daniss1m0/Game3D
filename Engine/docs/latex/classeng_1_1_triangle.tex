@@ -1,0 +1,90 @@
+\doxysection{eng\+::Triangle Class Reference}
+\hypertarget{classeng_1_1_triangle}{}\label{classeng_1_1_triangle}\index{eng::Triangle@{eng::Triangle}}
+
+
+{\ttfamily \#include $<$objects.\+h$>$}
+
+Inheritance diagram for eng\+::Triangle\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classeng_1_1_triangle}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1_triangle_a849df341546ac7422d463052d4d623fb}{Triangle}} (const glm\+::mat3x2 \&vertices, const glm\+::fvec4 \&color)
+\item 
+\mbox{\hyperlink{classeng_1_1_triangle_a097014f457f880533e0d1b6bb89a5960}{Triangle}} ()=default
+\item 
+const \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer}{inter\+::\+Vertex\+Buffer}} \& \mbox{\hyperlink{classeng_1_1_triangle_a5c69d76d152a6c1d04c503dfa93a95fa}{Get\+Vertex\+Buffer}} () const
+\item 
+glm\+::fvec2 \mbox{\hyperlink{classeng_1_1_triangle_a4ffbe38600bf23af0ac2567d8aedb7a7}{Get\+Center}} () const
+\item 
+void \mbox{\hyperlink{classeng_1_1_triangle_a333004b899f3200179b9a79b7c487df6}{Draw}} (\mbox{\hyperlink{classeng_1_1_renderer}{Renderer}} \texorpdfstring{$\ast$}{*}renderer)
+\item 
+void \mbox{\hyperlink{classeng_1_1_triangle_af69b47050d737df9491af7b9c46a179e}{Set\+Position}} (const glm\+::mat3x2 \&vertices)
+\item 
+void \mbox{\hyperlink{classeng_1_1_triangle_a3b59d750fc722606b8d8ae107e7f3f44}{Set\+Rotation}} (float angle)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classeng_1_1_base_object}{eng\+::\+Base\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1_base_object_a4e266420793aa6574177e3336b56cffc}{Base\+Object}} ()=default
+\item 
+\mbox{\hyperlink{classeng_1_1_event_receiver}{Event\+Receiver}} \& \mbox{\hyperlink{classeng_1_1_base_object_affb8259e9799a10c3f5b68ed3570b4c2}{Get\+Receiver}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classeng_1_1_triangle_a849df341546ac7422d463052d4d623fb}\label{classeng_1_1_triangle_a849df341546ac7422d463052d4d623fb} 
+\index{eng::Triangle@{eng::Triangle}!Triangle@{Triangle}}
+\index{Triangle@{Triangle}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{Triangle()}{Triangle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily eng\+::\+Triangle\+::\+Triangle (\begin{DoxyParamCaption}\item[{const glm\+::mat3x2 \&}]{vertices,  }\item[{const glm\+::fvec4 \&}]{color }\end{DoxyParamCaption})}
+
+\Hypertarget{classeng_1_1_triangle_a097014f457f880533e0d1b6bb89a5960}\label{classeng_1_1_triangle_a097014f457f880533e0d1b6bb89a5960} 
+\index{eng::Triangle@{eng::Triangle}!Triangle@{Triangle}}
+\index{Triangle@{Triangle}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{Triangle()}{Triangle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily eng\+::\+Triangle\+::\+Triangle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classeng_1_1_triangle_a333004b899f3200179b9a79b7c487df6}\label{classeng_1_1_triangle_a333004b899f3200179b9a79b7c487df6} 
+\index{eng::Triangle@{eng::Triangle}!Draw@{Draw}}
+\index{Draw@{Draw}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{Draw()}{Draw()}}
+{\footnotesize\ttfamily void eng\+::\+Triangle\+::\+Draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classeng_1_1_renderer}{Renderer}} \texorpdfstring{$\ast$}{*}}]{renderer }\end{DoxyParamCaption})}
+
+\Hypertarget{classeng_1_1_triangle_a4ffbe38600bf23af0ac2567d8aedb7a7}\label{classeng_1_1_triangle_a4ffbe38600bf23af0ac2567d8aedb7a7} 
+\index{eng::Triangle@{eng::Triangle}!GetCenter@{GetCenter}}
+\index{GetCenter@{GetCenter}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{GetCenter()}{GetCenter()}}
+{\footnotesize\ttfamily glm\+::fvec2 eng\+::\+Triangle\+::\+Get\+Center (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\Hypertarget{classeng_1_1_triangle_a5c69d76d152a6c1d04c503dfa93a95fa}\label{classeng_1_1_triangle_a5c69d76d152a6c1d04c503dfa93a95fa} 
+\index{eng::Triangle@{eng::Triangle}!GetVertexBuffer@{GetVertexBuffer}}
+\index{GetVertexBuffer@{GetVertexBuffer}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{GetVertexBuffer()}{GetVertexBuffer()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer}{inter\+::\+Vertex\+Buffer}} \& eng\+::\+Triangle\+::\+Get\+Vertex\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classeng_1_1_triangle_af69b47050d737df9491af7b9c46a179e}\label{classeng_1_1_triangle_af69b47050d737df9491af7b9c46a179e} 
+\index{eng::Triangle@{eng::Triangle}!SetPosition@{SetPosition}}
+\index{SetPosition@{SetPosition}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{SetPosition()}{SetPosition()}}
+{\footnotesize\ttfamily void eng\+::\+Triangle\+::\+Set\+Position (\begin{DoxyParamCaption}\item[{const glm\+::mat3x2 \&}]{vertices }\end{DoxyParamCaption})}
+
+\Hypertarget{classeng_1_1_triangle_a3b59d750fc722606b8d8ae107e7f3f44}\label{classeng_1_1_triangle_a3b59d750fc722606b8d8ae107e7f3f44} 
+\index{eng::Triangle@{eng::Triangle}!SetRotation@{SetRotation}}
+\index{SetRotation@{SetRotation}!eng::Triangle@{eng::Triangle}}
+\doxysubsubsection{\texorpdfstring{SetRotation()}{SetRotation()}}
+{\footnotesize\ttfamily void eng\+::\+Triangle\+::\+Set\+Rotation (\begin{DoxyParamCaption}\item[{float}]{angle }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/psk/\+PSK\+\_\+3\+DEngine/\+Engine/source/\+Engine/\mbox{\hyperlink{objects_8h}{objects.\+h}}\item 
+E\+:/psk/\+PSK\+\_\+3\+DEngine/\+Engine/source/\+Engine/\mbox{\hyperlink{objects_8cpp}{objects.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,120 @@
+\doxysection{buffers.\+h}
+\hypertarget{buffers_8h_source}{}\label{buffers_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/internal/buffers.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/internal/buffers.h}}
+\mbox{\hyperlink{buffers_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <glad/glad.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <glm/glm.hpp>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_base_class_8h}{Engine/BaseClass.h}}>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng_1_1inter}{eng::inter}}\ \textcolor{comment}{//\ engine::internal}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{BufferType}}\ :\ std::uint32\_t}
+\DoxyCodeLine{00015\ \ \ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577a4bbb8f967da6d1a610596d7257179c2b}{Invalid}}\ =\ 0,}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577ab22b929ba52471a02d18bb3a4e4472e6}{Vertex}}\ =\ GL\_ARRAY\_BUFFER,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577a88fa71f0a6e0dfedbb46d91cc0b37a50}{Index}}\ =\ GL\_ELEMENT\_ARRAY\_BUFFER,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577abae493947fa9ba765307029f3b2c3239}{VArray}}\ =\ GL\_VERTEX\_ARRAY}
+\DoxyCodeLine{00020\ \ \ \ \ \};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ Klasa\ bazowa\ dla\ buforów\ OpenGL.}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{BufferBase}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00024\ \ \ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ac3c35fd1e4b2321e77ffc8c4874fa545}{BufferBase}}(\mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{BufferType}}\ type);}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ac3c35fd1e4b2321e77ffc8c4874fa545}{BufferBase}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a179a76b0159f4d85efe21f1df417a759}{\string~BufferBase}}()\ \{\};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ typ\ bufora.}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{BufferType}}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ab3acdae7d3ce1122662f48d2dcf082ea}{GetType}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_aa0117b562e4fb488da674584a243bff1}{m\_Type}};\ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ identyfikator\ bufora.}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ std::uint32\_t\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a7e882d1b045684ea5dde0a31d9868fd8}{GetId}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a2581c93893144edecc7b50d2a1af7f87}{m\_Id}};\ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Używa\ bufora.}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a6970afc10cf73d9c491234c52931fee9}{Bind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Przestaje\ używać\ bufora.}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ad7c75557a9feb2fd2832b68e76c62fac}{Unbind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Typ\ bufora,\ np.\ bufor\ werteksów,\ indeksów.}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{BufferType}}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_aa0117b562e4fb488da674584a243bff1}{m\_Type}}\ =\ \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577a4bbb8f967da6d1a610596d7257179c2b}{BufferType::Invalid}};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Identyfikator\ bufora.}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a2581c93893144edecc7b50d2a1af7f87}{m\_Id}}\ =\ 0;}
+\DoxyCodeLine{00048\ \ \ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ Bufor\ werteksów.}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer}{VertexBuffer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{BufferBase}}}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_acdff60f05fd12a0b3cc338667eef5586}{VertexBuffer}}(\textcolor{keyword}{const}\ glm::mat3x2\&\ vertices,\ \textcolor{keyword}{const}\ glm::fvec4\&\ color);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_acdff60f05fd12a0b3cc338667eef5586}{VertexBuffer}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a0b53715af1e582279e0f7b5a1f37537d}{\string~VertexBuffer}}();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ werteksy\ bufora.}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ glm::mat2x3\&\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_acb611185bf81c266fd66f6f688f029d6}{GetVertices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_Vertices;\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ kolor\ bufora.}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ glm::fvec4\&\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a14fd80936e8085520201c32354599018}{GetColor}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_Color;\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ dane\ bufora\ ułożone\ liniowo.}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::array<float,\ 18>\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a7581ee54035247d1ff2b2c5ca98d4e05}{GetData}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_VertexData;\ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ustawia\ dane\ bufora.}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a798d3294d90e01da907708c5b5620bcd}{SetData}}(\textcolor{keyword}{const}\ glm::mat3x2\&\ vertices,\ \textcolor{keyword}{const}\ glm::fvec4\&\ color);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ustawia\ dane\ bufora\ ułożone\ liniowo.}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a88d540323d0ece4e43e81d4d701ba853}{SetDataArray}}(\textcolor{keyword}{const}\ std::array<float,\ 18>\&\ vertexData);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Werteksy\ bufora.}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ glm::mat3x2\ m\_Vertices\ =\ \{\};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Kolor\ bufora.}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ glm::fvec4\ m\_Color\ =\ \{\};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dane\ dla\ bufora\ w\ OpenGL.}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ std::array<float,\ 18>\ m\_VertexData\ =\ \{\};}
+\DoxyCodeLine{00082\ \ \ \ \ \};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ Bufor\ indeksów.}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer}{IndexBuffer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{BufferBase}}}
+\DoxyCodeLine{00086\ \ \ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer_a7b0fa418e43e6c6b29fd86628d0c7c7a}{IndexBuffer}}(\textcolor{keyword}{const}\ glm::uvec4\&\ indexes);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer_a7b0fa418e43e6c6b29fd86628d0c7c7a}{IndexBuffer}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer_ac65fc5c6d69e981cb46d2d107356cf07}{\string~IndexBuffer}}();}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ indeksy\ bufora.}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ glm::uvec4\&\ \mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer_ae3b12f9fad5090a28a0efcc006c7ee38}{GetIndexes}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_Indexes;\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Indeksy\ bufora.}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ glm::uvec4\ m\_Indexes\ =\ \{\};}
+\DoxyCodeLine{00098\ \ \ \ \ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ Tablica\ werteksów.}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array}{VertexArray}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{BufferBase}}}
+\DoxyCodeLine{00102\ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array_ad8244ecb36755e36fbd8dc0f128d9b87}{VertexArray}}();}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array_af9654b7671c5fe825324aceca5cfb93c}{\string~VertexArray}}();}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Używa\ tablicy.}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array_aa13971084fca24b4fe3202ab548a0fc3}{Bind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Przestaje\ używać\ tablicy.}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array_ac14d8d58afb1b92c815041b92057ffa8}{Unbind}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00112\ \ \ \ \ \};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \}}
+
+\end{DoxyCode}

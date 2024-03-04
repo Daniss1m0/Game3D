@@ -1,0 +1,176 @@
+\doxysection{eng Namespace Reference}
+\hypertarget{namespaceeng}{}\label{namespaceeng}\index{eng@{eng}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceeng_1_1inter}{inter}}
+\item 
+namespace \mbox{\hyperlink{namespaceeng_1_1showcase}{showcase}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classeng_1_1_base_class}{Base\+Class}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_base_object}{Base\+Object}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_camera}{Camera}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_engine}{Engine}}
+\item 
+struct \mbox{\hyperlink{structeng_1_1_event}{Event}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_event_base}{Event\+Base}}
+\item 
+struct \mbox{\hyperlink{structeng_1_1_event_data}{Event\+Data}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_event_interactive}{Event\+Interactive}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_event_receiver}{Event\+Receiver}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_event_source}{Event\+Source}}
+\item 
+struct \mbox{\hyperlink{structeng_1_1_hook}{Hook}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_program}{Program}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_scene}{Scene}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_shader}{Shader}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_triangle}{Triangle}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_uniform}{Uniform}}
+\item 
+class \mbox{\hyperlink{classeng_1_1_window}{Window}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{Event\+Type}} \+: std\+::uint32\+\_\+t \{ \newline
+\mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b}{Invalid}} = 0
+, \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a06933067aafd48425d67bcb01bba5cb6}{Update}}
+, \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a65a1aa093fcf3acd50b318f1942c02f5}{Key\+Press}}
+, \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855af60ef42c86a517b538d351180f216684}{Mouse\+Press}}
+, \newline
+\mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855a6924f81750ac471df87fed683bcea516}{Mouse\+Wheel}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374}{Shader\+Type}} \+: std\+::uint32\+\_\+t \{ \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374a4bbb8f967da6d1a610596d7257179c2b}{Invalid}} = 0
+, \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374ab22b929ba52471a02d18bb3a4e4472e6}{Vertex}} = 1
+, \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374a37d01b98065725fe3a1d30acf3a0064a}{Fragment}} = 2
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceeng_a5bc50fd598a4811ab12954b93d9ae419}{Message\+Callback}} (GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar \texorpdfstring{$\ast$}{*}message, const void \texorpdfstring{$\ast$}{*}user\+Param)
+\item 
+void \mbox{\hyperlink{namespaceeng_a48a5830825924a95bac6faf340179de7}{Key\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, std\+::int32\+\_\+t key, std\+::int32\+\_\+t scan\+Code, std\+::int32\+\_\+t action, std\+::int32\+\_\+t mods)
+\item 
+void \mbox{\hyperlink{namespaceeng_a554aae141444c822c566ec5d3db81248}{Mouse\+Pos\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, double x, double y)
+\item 
+void \mbox{\hyperlink{namespaceeng_a6af26a5cd8fe99f18eccb94f0612ce5b}{Mouse\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, std\+::int32\+\_\+t button, std\+::int32\+\_\+t action, std\+::int32\+\_\+t mods)
+\item 
+void \mbox{\hyperlink{namespaceeng_a983ff9c745e920a057b9af706d8b9943}{Scroll\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, double x\+Offset, double y\+Offset)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1_event_source}{Event\+Source}} \mbox{\hyperlink{namespaceeng_a0e300e167599cb55822c7045eff0b518}{g\+\_\+\+Event\+Source}} = \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855} 
+\index{eng@{eng}!EventType@{EventType}}
+\index{EventType@{EventType}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{EventType}{EventType}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespaceeng_a1ff46f96c7f8c072d871712289203855}{eng\+::\+Event\+Type}} \+: std\+::uint32\+\_\+t\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Invalid@{Invalid}!eng@{eng}}\index{eng@{eng}!Invalid@{Invalid}}}\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855a4bbb8f967da6d1a610596d7257179c2b} 
+Invalid&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Update@{Update}!eng@{eng}}\index{eng@{eng}!Update@{Update}}}\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855a06933067aafd48425d67bcb01bba5cb6}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855a06933067aafd48425d67bcb01bba5cb6} 
+Update&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{KeyPress@{KeyPress}!eng@{eng}}\index{eng@{eng}!KeyPress@{KeyPress}}}\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855a65a1aa093fcf3acd50b318f1942c02f5}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855a65a1aa093fcf3acd50b318f1942c02f5} 
+Key\+Press&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MousePress@{MousePress}!eng@{eng}}\index{eng@{eng}!MousePress@{MousePress}}}\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855af60ef42c86a517b538d351180f216684}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855af60ef42c86a517b538d351180f216684} 
+Mouse\+Press&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MouseWheel@{MouseWheel}!eng@{eng}}\index{eng@{eng}!MouseWheel@{MouseWheel}}}\Hypertarget{namespaceeng_a1ff46f96c7f8c072d871712289203855a6924f81750ac471df87fed683bcea516}\label{namespaceeng_a1ff46f96c7f8c072d871712289203855a6924f81750ac471df87fed683bcea516} 
+Mouse\+Wheel&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{namespaceeng_af090ec8e1553770c32be05249addf374}\label{namespaceeng_af090ec8e1553770c32be05249addf374} 
+\index{eng@{eng}!ShaderType@{ShaderType}}
+\index{ShaderType@{ShaderType}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{ShaderType}{ShaderType}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespaceeng_af090ec8e1553770c32be05249addf374}{eng\+::\+Shader\+Type}} \+: std\+::uint32\+\_\+t\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Invalid@{Invalid}!eng@{eng}}\index{eng@{eng}!Invalid@{Invalid}}}\Hypertarget{namespaceeng_af090ec8e1553770c32be05249addf374a4bbb8f967da6d1a610596d7257179c2b}\label{namespaceeng_af090ec8e1553770c32be05249addf374a4bbb8f967da6d1a610596d7257179c2b} 
+Invalid&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Vertex@{Vertex}!eng@{eng}}\index{eng@{eng}!Vertex@{Vertex}}}\Hypertarget{namespaceeng_af090ec8e1553770c32be05249addf374ab22b929ba52471a02d18bb3a4e4472e6}\label{namespaceeng_af090ec8e1553770c32be05249addf374ab22b929ba52471a02d18bb3a4e4472e6} 
+Vertex&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Fragment@{Fragment}!eng@{eng}}\index{eng@{eng}!Fragment@{Fragment}}}\Hypertarget{namespaceeng_af090ec8e1553770c32be05249addf374a37d01b98065725fe3a1d30acf3a0064a}\label{namespaceeng_af090ec8e1553770c32be05249addf374a37d01b98065725fe3a1d30acf3a0064a} 
+Fragment&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceeng_a48a5830825924a95bac6faf340179de7}\label{namespaceeng_a48a5830825924a95bac6faf340179de7} 
+\index{eng@{eng}!KeyCallback@{KeyCallback}}
+\index{KeyCallback@{KeyCallback}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{KeyCallback()}{KeyCallback()}}
+{\footnotesize\ttfamily static void eng\+::\+Key\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window,  }\item[{std\+::int32\+\_\+t}]{key,  }\item[{std\+::int32\+\_\+t}]{scan\+Code,  }\item[{std\+::int32\+\_\+t}]{action,  }\item[{std\+::int32\+\_\+t}]{mods }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceeng_a5bc50fd598a4811ab12954b93d9ae419}\label{namespaceeng_a5bc50fd598a4811ab12954b93d9ae419} 
+\index{eng@{eng}!MessageCallback@{MessageCallback}}
+\index{MessageCallback@{MessageCallback}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{MessageCallback()}{MessageCallback()}}
+{\footnotesize\ttfamily void GLAPIENTRY eng\+::\+Message\+Callback (\begin{DoxyParamCaption}\item[{GLenum}]{source,  }\item[{GLenum}]{type,  }\item[{GLuint}]{id,  }\item[{GLenum}]{severity,  }\item[{GLsizei}]{length,  }\item[{const GLchar \texorpdfstring{$\ast$}{*}}]{message,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{user\+Param }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceeng_a6af26a5cd8fe99f18eccb94f0612ce5b}\label{namespaceeng_a6af26a5cd8fe99f18eccb94f0612ce5b} 
+\index{eng@{eng}!MouseCallback@{MouseCallback}}
+\index{MouseCallback@{MouseCallback}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{MouseCallback()}{MouseCallback()}}
+{\footnotesize\ttfamily static void eng\+::\+Mouse\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window,  }\item[{std\+::int32\+\_\+t}]{button,  }\item[{std\+::int32\+\_\+t}]{action,  }\item[{std\+::int32\+\_\+t}]{mods }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceeng_a554aae141444c822c566ec5d3db81248}\label{namespaceeng_a554aae141444c822c566ec5d3db81248} 
+\index{eng@{eng}!MousePosCallback@{MousePosCallback}}
+\index{MousePosCallback@{MousePosCallback}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{MousePosCallback()}{MousePosCallback()}}
+{\footnotesize\ttfamily static void eng\+::\+Mouse\+Pos\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window,  }\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption})}
+
+\Hypertarget{namespaceeng_a983ff9c745e920a057b9af706d8b9943}\label{namespaceeng_a983ff9c745e920a057b9af706d8b9943} 
+\index{eng@{eng}!ScrollCallback@{ScrollCallback}}
+\index{ScrollCallback@{ScrollCallback}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{ScrollCallback()}{ScrollCallback()}}
+{\footnotesize\ttfamily static void eng\+::\+Scroll\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window,  }\item[{double}]{x\+Offset,  }\item[{double}]{y\+Offset }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespaceeng_a0e300e167599cb55822c7045eff0b518}\label{namespaceeng_a0e300e167599cb55822c7045eff0b518} 
+\index{eng@{eng}!g\_EventSource@{g\_EventSource}}
+\index{g\_EventSource@{g\_EventSource}!eng@{eng}}
+\doxysubsubsection{\texorpdfstring{g\_EventSource}{g\_EventSource}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classeng_1_1_event_source}{eng\+::\+Event\+Source}} eng\+::g\+\_\+\+Event\+Source = \{\}\hspace{0.3cm}{\ttfamily [extern]}}
+

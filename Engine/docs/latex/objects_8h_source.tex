@@ -1,0 +1,66 @@
+\doxysection{objects.\+h}
+\hypertarget{objects_8h_source}{}\label{objects_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/objects.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/objects.h}}
+\mbox{\hyperlink{objects_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <glad/glad.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <glfw/glfw3.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <glm/glm.hpp>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{buffers_8h}{Engine/internal/buffers.h}}>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_renderer_8h}{Engine/Renderer.h}}>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{events_8h}{Engine/events.h}}>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng}{eng}}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ Klasa\ bazowa\ obiektu.}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_base_object}{BaseObject}}}
+\DoxyCodeLine{00016\ \ \ \ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_base_object_a4e266420793aa6574177e3336b56cffc}{BaseObject}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Odbiornik\ zdarzeń.}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}\&\ \mbox{\hyperlink{classeng_1_1_base_object_affb8259e9799a10c3f5b68ed3570b4c2}{GetReceiver}}()\ \{\ \textcolor{keywordflow}{return}\ m\_Receiver;\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_receiver}{EventReceiver}}\ m\_Receiver;}
+\DoxyCodeLine{00025\ \ \ \ \ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ Trójkąt.}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_triangle}{Triangle}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_object}{BaseObject}}}
+\DoxyCodeLine{00029\ \ \ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_triangle_a097014f457f880533e0d1b6bb89a5960}{Triangle}}(\textcolor{keyword}{const}\ glm::mat3x2\&\ vertices,\ \textcolor{keyword}{const}\ glm::fvec4\&\ color);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_triangle_a097014f457f880533e0d1b6bb89a5960}{Triangle}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ bufor\ werteksów\ trójkąta.}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer}{inter::VertexBuffer}}\&\ \mbox{\hyperlink{classeng_1_1_triangle_a5c69d76d152a6c1d04c503dfa93a95fa}{GetVertexBuffer}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_VertexBuffer;\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Wylicza\ środek.}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ glm::fvec2\ \mbox{\hyperlink{classeng_1_1_triangle_a4ffbe38600bf23af0ac2567d8aedb7a7}{GetCenter}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rysuje\ trójkąt.}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_triangle_a333004b899f3200179b9a79b7c487df6}{Draw}}(\mbox{\hyperlink{classeng_1_1_renderer}{Renderer}}*\ renderer);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ustawia\ nową\ pozycję\ trójkąta.}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_triangle_af69b47050d737df9491af7b9c46a179e}{SetPosition}}(\textcolor{keyword}{const}\ glm::mat3x2\&\ vertices);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ustawia\ nową\ rotację\ trójkąta.}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_triangle_a3b59d750fc722606b8d8ae107e7f3f44}{SetRotation}}(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Tablica\ werteksów.}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_array}{inter::VertexArray}}\ m\_VertexArray;}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bufor\ indeksów.}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_index_buffer}{inter::IndexBuffer}}\ m\_IndexBuffer;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bufor\ werteksów.}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer}{inter::VertexBuffer}}\ m\_VertexBuffer;}
+\DoxyCodeLine{00058\ \ \ \ \ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \}}
+
+\end{DoxyCode}

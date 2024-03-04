@@ -1,0 +1,80 @@
+\doxysection{Engine.\+h}
+\hypertarget{_engine_8h_source}{}\label{_engine_8h_source}\index{E:/psk/PSK\_3DEngine/Engine/source/Engine/Engine.h@{E:/psk/PSK\_3DEngine/Engine/source/Engine/Engine.h}}
+\mbox{\hyperlink{_engine_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <glad/glad.h>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <glfw/glfw3.h>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_shader_8h}{Engine/Shader.h}}>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_window_8h}{Engine/Window.h}}>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_renderer_8h}{Engine/Renderer.h}}>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{objects_8h}{Engine/objects.h}}>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{events_8h}{Engine/events.h}}>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_base_class_8h}{Engine/BaseClass.h}}>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_uniform_8h}{Engine/Uniform.h}}>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{utility_8h}{Engine/utility.h}}>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_camera_8h}{Engine/Camera.h}}>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ ENG\_CLEAR\_COLOR\ glm::fvec4(0.1f,\ 0.1f,\ 0.1f,\ 1.0f)}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceeng}{eng}}}
+\DoxyCodeLine{00025\ \{}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ Klasa\ zawiera\ obiekty.}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_scene}{Scene}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00029\ \ \ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_engine}{Engine}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_scene_ab1ca7c8937674092147a466bf5d6db2b}{Scene}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Tworzy\ nowy\ trójkąt.}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ std::shared\_ptr<Triangle*>\ \mbox{\hyperlink{classeng_1_1_scene_a00eb71c570bbf46589f9d8271e26654a}{CreateTriangle}}(\mbox{\hyperlink{classeng_1_1_triangle}{Triangle}}*\ \textcolor{keywordtype}{object});}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Trójkąty\ sceny.}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ std::vector<std::shared\_ptr<Triangle*>>\ m\_Triangles\ =\ \{\ \};}
+\DoxyCodeLine{00041\ \ \ \ \ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ Klasa\ silnika\ która\ zawiera\ główne\ okno.}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classeng_1_1_engine}{Engine}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classeng_1_1_base_class}{BaseClass}}}
+\DoxyCodeLine{00045\ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_engine_aeb18919808003b5974d0f3d18a5371a2}{Engine}}(std::uint32\_t\ width,\ std::uint32\_t\ height,\ \textcolor{keyword}{const}\ std::string\&\ title);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_engine_aeb18919808003b5974d0f3d18a5371a2}{Engine}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_engine_a1f7bc800f60a439c8765d6fc92d31124}{\string~Engine}}();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zwraca\ główną\ kamerę\ silnika.}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classeng_1_1_camera}{Camera}}\&\ \mbox{\hyperlink{classeng_1_1_engine_a2c6971f7a72b10a8efc70bf6c41f6c2c}{GetCamera}}()\ \{\ \textcolor{keywordflow}{return}\ m\_Camera;\ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Tworzy\ nową\ scenę.}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ std::shared\_ptr<Scene>\ \mbox{\hyperlink{classeng_1_1_engine_acafc304a6dbd4aa3e35acc2a264fece3}{CreateScene}}();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Zawiera\ pętlę\ główną.}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classeng_1_1_engine_a4e686e8b52006a873a83ec842d374da3}{Run}}();}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Okienko\ aplikacji.}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_window}{Window}}\ m\_Window;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Źródło\ zdarzeń.}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_event_source}{EventSource}}\ m\_EventSource;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Kamera\ silnika.}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classeng_1_1_camera}{Camera}}\ m\_Camera;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sceny\ silnika.}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ std::vector<std::shared\_ptr<Scene>>\ m\_Scenes\ =\ \{\};}
+\DoxyCodeLine{00072\ \ \ \ \ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \}}
+
+\end{DoxyCode}

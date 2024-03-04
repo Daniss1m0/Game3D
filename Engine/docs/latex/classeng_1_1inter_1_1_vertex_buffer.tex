@@ -1,0 +1,125 @@
+\doxysection{eng\+::inter\+::Vertex\+Buffer Class Reference}
+\hypertarget{classeng_1_1inter_1_1_vertex_buffer}{}\label{classeng_1_1inter_1_1_vertex_buffer}\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+
+
+{\ttfamily \#include $<$buffers.\+h$>$}
+
+Inheritance diagram for eng\+::inter\+::Vertex\+Buffer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classeng_1_1inter_1_1_vertex_buffer}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a76fd932e60b644b52804a0267cb1e9c2}{Vertex\+Buffer}} (const glm\+::mat3x2 \&vertices, const glm\+::fvec4 \&color)
+\item 
+\mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_acdff60f05fd12a0b3cc338667eef5586}{Vertex\+Buffer}} ()=default
+\item 
+\mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a0b53715af1e582279e0f7b5a1f37537d}{\texorpdfstring{$\sim$}{\string~}\+Vertex\+Buffer}} ()
+\item 
+const glm\+::mat2x3 \& \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_acb611185bf81c266fd66f6f688f029d6}{Get\+Vertices}} () const
+\item 
+const glm\+::fvec4 \& \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a14fd80936e8085520201c32354599018}{Get\+Color}} () const
+\item 
+const std\+::array$<$ float, 18 $>$ \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a7581ee54035247d1ff2b2c5ca98d4e05}{Get\+Data}} () const
+\item 
+void \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a798d3294d90e01da907708c5b5620bcd}{Set\+Data}} (const glm\+::mat3x2 \&vertices, const glm\+::fvec4 \&color)
+\item 
+void \mbox{\hyperlink{classeng_1_1inter_1_1_vertex_buffer_a88d540323d0ece4e43e81d4d701ba853}{Set\+Data\+Array}} (const std\+::array$<$ float, 18 $>$ \&vertex\+Data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{eng\+::inter\+::\+Buffer\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_abea81c4d54140a56c577827e28fc4fd6}{Buffer\+Base}} (\mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{Buffer\+Type}} type)
+\item 
+\mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ac3c35fd1e4b2321e77ffc8c4874fa545}{Buffer\+Base}} ()=default
+\item 
+virtual \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a179a76b0159f4d85efe21f1df417a759}{\texorpdfstring{$\sim$}{\string~}\+Buffer\+Base}} ()
+\item 
+\mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{Buffer\+Type}} \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ab3acdae7d3ce1122662f48d2dcf082ea}{Get\+Type}} () const
+\item 
+std\+::uint32\+\_\+t \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a7e882d1b045684ea5dde0a31d9868fd8}{Get\+Id}} () const
+\item 
+void \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a6970afc10cf73d9c491234c52931fee9}{Bind}} () const
+\item 
+void \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_ad7c75557a9feb2fd2832b68e76c62fac}{Unbind}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classeng_1_1_base_class}{eng\+::\+Base\+Class}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeng_1_1_base_class_a75d1a97d640199e5cb3cf99a18f8b119}{Base\+Class}} ()=default
+\item 
+bool \mbox{\hyperlink{classeng_1_1_base_class_aae3f73dbd0bfb42570fe56322f06e9ac}{Is\+Valid}} ()
+\item 
+void \mbox{\hyperlink{classeng_1_1_base_class_a6973d1e0cea155c739b075fe79eb312f}{Set\+Valid}} (bool valid)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base}{eng\+::inter\+::\+Buffer\+Base}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577}{Buffer\+Type}} \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_aa0117b562e4fb488da674584a243bff1}{m\+\_\+\+Type}} = \mbox{\hyperlink{namespaceeng_1_1inter_abe7a5aa9fcd78302d546ff8e7718f577a4bbb8f967da6d1a610596d7257179c2b}{Buffer\+Type\+::\+Invalid}}
+\item 
+std\+::uint32\+\_\+t \mbox{\hyperlink{classeng_1_1inter_1_1_buffer_base_a2581c93893144edecc7b50d2a1af7f87}{m\+\_\+\+Id}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a76fd932e60b644b52804a0267cb1e9c2}\label{classeng_1_1inter_1_1_vertex_buffer_a76fd932e60b644b52804a0267cb1e9c2} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!VertexBuffer@{VertexBuffer}}
+\index{VertexBuffer@{VertexBuffer}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{VertexBuffer()}{VertexBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily eng\+::inter\+::\+Vertex\+Buffer\+::\+Vertex\+Buffer (\begin{DoxyParamCaption}\item[{const glm\+::mat3x2 \&}]{vertices,  }\item[{const glm\+::fvec4 \&}]{color }\end{DoxyParamCaption})}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_acdff60f05fd12a0b3cc338667eef5586}\label{classeng_1_1inter_1_1_vertex_buffer_acdff60f05fd12a0b3cc338667eef5586} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!VertexBuffer@{VertexBuffer}}
+\index{VertexBuffer@{VertexBuffer}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{VertexBuffer()}{VertexBuffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily eng\+::inter\+::\+Vertex\+Buffer\+::\+Vertex\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a0b53715af1e582279e0f7b5a1f37537d}\label{classeng_1_1inter_1_1_vertex_buffer_a0b53715af1e582279e0f7b5a1f37537d} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!````~VertexBuffer@{\texorpdfstring{$\sim$}{\string~}VertexBuffer}}
+\index{````~VertexBuffer@{\texorpdfstring{$\sim$}{\string~}VertexBuffer}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}VertexBuffer()}{\string~VertexBuffer()}}
+{\footnotesize\ttfamily eng\+::inter\+::\+Vertex\+Buffer\+::\texorpdfstring{$\sim$}{\string~}\+Vertex\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a14fd80936e8085520201c32354599018}\label{classeng_1_1inter_1_1_vertex_buffer_a14fd80936e8085520201c32354599018} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!GetColor@{GetColor}}
+\index{GetColor@{GetColor}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{GetColor()}{GetColor()}}
+{\footnotesize\ttfamily const glm\+::fvec4 \& eng\+::inter\+::\+Vertex\+Buffer\+::\+Get\+Color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a7581ee54035247d1ff2b2c5ca98d4e05}\label{classeng_1_1inter_1_1_vertex_buffer_a7581ee54035247d1ff2b2c5ca98d4e05} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!GetData@{GetData}}
+\index{GetData@{GetData}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{GetData()}{GetData()}}
+{\footnotesize\ttfamily const std\+::array$<$ float, 18 $>$ eng\+::inter\+::\+Vertex\+Buffer\+::\+Get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_acb611185bf81c266fd66f6f688f029d6}\label{classeng_1_1inter_1_1_vertex_buffer_acb611185bf81c266fd66f6f688f029d6} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!GetVertices@{GetVertices}}
+\index{GetVertices@{GetVertices}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{GetVertices()}{GetVertices()}}
+{\footnotesize\ttfamily const glm\+::mat2x3 \& eng\+::inter\+::\+Vertex\+Buffer\+::\+Get\+Vertices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a798d3294d90e01da907708c5b5620bcd}\label{classeng_1_1inter_1_1_vertex_buffer_a798d3294d90e01da907708c5b5620bcd} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!SetData@{SetData}}
+\index{SetData@{SetData}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{SetData()}{SetData()}}
+{\footnotesize\ttfamily void eng\+::inter\+::\+Vertex\+Buffer\+::\+Set\+Data (\begin{DoxyParamCaption}\item[{const glm\+::mat3x2 \&}]{vertices,  }\item[{const glm\+::fvec4 \&}]{color }\end{DoxyParamCaption})}
+
+\Hypertarget{classeng_1_1inter_1_1_vertex_buffer_a88d540323d0ece4e43e81d4d701ba853}\label{classeng_1_1inter_1_1_vertex_buffer_a88d540323d0ece4e43e81d4d701ba853} 
+\index{eng::inter::VertexBuffer@{eng::inter::VertexBuffer}!SetDataArray@{SetDataArray}}
+\index{SetDataArray@{SetDataArray}!eng::inter::VertexBuffer@{eng::inter::VertexBuffer}}
+\doxysubsubsection{\texorpdfstring{SetDataArray()}{SetDataArray()}}
+{\footnotesize\ttfamily void eng\+::inter\+::\+Vertex\+Buffer\+::\+Set\+Data\+Array (\begin{DoxyParamCaption}\item[{const std\+::array$<$ float, 18 $>$ \&}]{vertex\+Data }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/psk/\+PSK\+\_\+3\+DEngine/\+Engine/source/\+Engine/internal/\mbox{\hyperlink{buffers_8h}{buffers.\+h}}\item 
+E\+:/psk/\+PSK\+\_\+3\+DEngine/\+Engine/source/\+Engine/internal/\mbox{\hyperlink{buffers_8cpp}{buffers.\+cpp}}\end{DoxyCompactItemize}
