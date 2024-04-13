@@ -68,6 +68,7 @@ namespace eng
 		Triangle triangle2(vertices2, sizeof(vertices2));
 
 
+
 		while (!m_Window.ShouldClose())
 		{
 			// ---------------------------------------------
