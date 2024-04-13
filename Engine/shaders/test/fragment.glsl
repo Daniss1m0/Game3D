@@ -1,18 +1,6 @@
-#version 410 core
-
-out vec4 outputColor;
-
-in vec4 vertexColor;
-in vec2 vertexTexCoord;
-
-uniform sampler2D tex;
-uniform int uHasTexture;
-uniform float uBrightness;
-
+#version 330 core
+out vec4 FragColor;
 void main()
 {
-	if (uHasTexture == 1)
-		outputColor = texture(tex, vertexTexCoord);
-	else
-		outputColor = vec4(vertexColor.x * uBrightness, vertexColor.g * uBrightness, vertexColor.b * uBrightness, 1.0);
+   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);
 }

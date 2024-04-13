@@ -34,6 +34,39 @@ namespace eng
 
 		Renderer* renderer = Renderer::Get();
 
+		// ---------------------------------------------
+		//		Shadery
+		// ---------------------------------------------
+		Shader shaderProgram("shaders/test/vertex.glsl", "shaders/test/fragment.glsl");
+
+		GLfloat vertices[] =
+		{
+			-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
+			0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
+			0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
+			-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
+			0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
+			0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
+		};
+
+		GLuint indices[] =
+		{
+			0, 3, 5, // Lower left triangle
+			3, 2, 4, // Upper triangle
+			5, 4, 1 // Lower right triangle
+		};
+
+		Triangle triangle1(vertices, sizeof(vertices), indices, sizeof(indices));
+
+		GLfloat vertices2[] =
+		{
+			0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
+			1.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
+			1.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
+		};
+
+		Triangle triangle2(vertices2, sizeof(vertices2));
+
 
 		while (!m_Window.ShouldClose())
 		{
@@ -41,6 +74,7 @@ namespace eng
 			//		Logika
 			// ---------------------------------------------
 			m_Window.HandleEvents();
+
 			// if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_P) == GLFW_PRESS)
 			
 			// ---------------------------------------------
@@ -48,8 +82,16 @@ namespace eng
 			// ---------------------------------------------
 			renderer->Clear(ENG_CLEAR_COLOR * 1.0f);
 
+			shaderProgram.Activate();
+
+			triangle1.Draw_with_Indices();
+			triangle2.Draw(renderer);
+
+
 			m_Window.SwapBuffers();
 		}
+
+		shaderProgram.Delete();
 	}
 	/*
 	void Engine::SetFPS(std::uint32_t fps)

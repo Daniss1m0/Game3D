@@ -14,10 +14,11 @@ namespace eng
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer::Draw(std::uint32_t vao)
+	void Renderer::Draw(GLuint vao)
 	{
 		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
 	}
 

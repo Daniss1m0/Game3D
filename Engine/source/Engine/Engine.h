@@ -11,6 +11,9 @@
 
 #include <Engine/Window.h>
 #include <Engine/Renderer.h>
+#include <Engine/Shader.h>
+#include <Engine/GameObjects.h>
+#include <Engine/internal/buffers.h>
 
 #define ENG_CLEAR_COLOR glm::fvec4(0.1f, 0.1f, 0.1f, 1.0f)
 
