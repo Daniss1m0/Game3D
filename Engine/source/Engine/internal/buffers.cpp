@@ -33,10 +33,10 @@ namespace eng::inter
 	}
 
 	// Links a VBO to the VAO using a certain layout
-	void VAO::LinkVBO(VBO& VBO, GLuint layout)
+	void VAO::LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
 	{
 		VBO.Bind();
-		glVertexAttribPointer(layout, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
 		glEnableVertexAttribArray(layout);
 		VBO.Unbind();
 	}
@@ -84,6 +84,7 @@ namespace eng::inter
 		glDeleteBuffers(1, &ID);
 	}
 
+
 	GLsizei EBO::GetCount() const
 	{
 		GLsizei count;
@@ -91,14 +92,6 @@ namespace eng::inter
 		glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &count);
 		return count / sizeof(GLuint);
 	}
-
-
-	
-	EBO::EBO()
-	{
-		glGenBuffers(1, &ID);
-	}
-
 
 	GLuint VAO::GetId() const
 	{

@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="shaders\test\lightvertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Engine\Camera.h" />

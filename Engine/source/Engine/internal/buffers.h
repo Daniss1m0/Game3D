@@ -33,7 +33,7 @@ namespace eng::inter // engine::internal
 		VAO();
 
 		// Links a VBO to the VAO using a certain layout
-		void LinkVBO(VBO& VBO, GLuint layout);
+		void LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
 		// Binds the VAO
 		void Bind();
 		// Unbinds the VAO
@@ -60,6 +60,5 @@ namespace eng::inter // engine::internal
 		void Delete();
 
 		GLsizei GetCount() const;
-		EBO();
 	};
 }
