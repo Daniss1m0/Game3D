@@ -9,6 +9,11 @@ namespace eng::inter
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
+	VBO::~VBO()
+	{
+		glDeleteBuffers(1, &ID);
+	}
+
 	// Binds the VBO
 	void VBO::Bind()
 	{
@@ -21,15 +26,19 @@ namespace eng::inter
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	// Deletes the VBO
-	void VBO::Delete()
+	void VBO::BufferData(GLfloat* vertices, GLsizeiptr size)
 	{
-		glDeleteBuffers(1, &ID);
+		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
 	VAO::VAO()
 	{
 		glGenVertexArrays(1, &ID);
+	}
+
+	VAO::~VAO()
+	{
+		glDeleteVertexArrays(1, &ID);
 	}
 
 	// Links a VBO to the VAO using a certain layout
@@ -53,17 +62,16 @@ namespace eng::inter
 		glBindVertexArray(0);
 	}
 
-	// Deletes the VAO
-	void VAO::Delete()
-	{
-		glDeleteVertexArrays(1, &ID);
-	}
-
 	EBO::EBO(GLuint* indices, GLsizeiptr size)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+	}
+
+	EBO::~EBO()
+	{
+		glDeleteBuffers(1, &ID);
 	}
 
 	// Binds the EBO
@@ -78,12 +86,11 @@ namespace eng::inter
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-	// Deletes the EBO
-	void EBO::Delete()
-	{
-		glDeleteBuffers(1, &ID);
-	}
 
+	void EBO::BufferData(GLuint* indices, GLsizeiptr size)
+	{
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+	}
 
 	GLsizei EBO::GetCount() const
 	{

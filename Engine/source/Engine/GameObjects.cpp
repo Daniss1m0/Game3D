@@ -47,6 +47,122 @@ namespace eng
 		glBindTexture(texType, 0);
 	}
 
+	// Ten konstruktor nie dziala tak, jak tego chce :(
+	Texture::Texture(const std::vector<std::string>& images, GLenum texType, GLuint slot, GLenum format, GLenum pixelType)
+	{
+		// Assigns the type of the texture to the texture object
+		type = texType;
+
+		// Generates an OpenGL texture object
+		glGenTextures(1, &ID);
+		// Assigns the texture to a Texture Unit
+		glActiveTexture(GL_TEXTURE0 + slot);
+		unit = slot;
+		glBindTexture(texType, ID);
+
+		// Configures the type of algorithm that is used to make the image smaller or bigger
+		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		// Configures the way the texture repeats (if it does at all)
+		glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
+		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
+
+		// Loads and assigns each image to the OpenGL Texture object
+
+		for (size_t i = 0; i < images.size(); ++i)
+		{
+			std::cout << images[i] << std::endl;
+			// Stores the width, height, and the number of color channels of the image
+			int widthImg, heightImg, numColCh;
+			// Flips the image so it appears right side up
+			stbi_set_flip_vertically_on_load(true);
+			// Reads the image from a file and stores it in bytes
+			unsigned char* bytes = stbi_load(images[i].c_str(), &widthImg, &heightImg, &numColCh, 0);
+			if (bytes)
+			{
+				glTexImage2D(
+					GL_TEXTURE_2D, // Assuming 2D textures for simplicity, can be modified for other types
+					0,
+					GL_RGBA,
+					widthImg,
+					heightImg,
+					0,
+					format,
+					pixelType,
+					bytes
+				);
+
+				// Deletes the image data as it is already in the OpenGL Texture object
+				stbi_image_free(bytes);
+			}
+			else
+			{
+				std::cout << "Failed to load texture: " << images[i] << std::endl;
+			}
+		}
+
+		// Generates MipMaps
+		glGenerateMipmap(texType);
+
+		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
+		glBindTexture(texType, 0);
+
+		/* Inna wersja
+		// Creates the cubemap texture object
+		unsigned int cubemapTexture;
+		glGenTextures(1, &cubemapTexture);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		// These are very important to prevent seams
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		// This might help with seams on some systems
+		//glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+		// Cycles through all the textures and attaches them to the cubemap object
+		for (unsigned int i = 0; i < 6; i++)
+		{
+			int width, height, nrChannels;
+			unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
+			if (data)
+			{
+				stbi_set_flip_vertically_on_load(false);
+				glTexImage2D
+				(
+					GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+					0,
+					GL_RGB,
+					width,
+					height,
+					0,
+					GL_RGB,
+					GL_UNSIGNED_BYTE,
+					data
+				);
+				stbi_image_free(data);
+			}
+			else
+			{
+				std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
+				stbi_image_free(data);
+				//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+			}
+		}
+		*/
+	}
+
+	Texture::~Texture()
+	{
+		glDeleteTextures(1, &ID);
+	}
+
 	void Texture::texUnit(Shader& shader, const char* uniform, GLuint unit)
 	{
 		// Gets the location of the uniform
@@ -68,32 +184,39 @@ namespace eng
 		glBindTexture(type, 0);
 	}
 
-	void Texture::Delete()
+	void BaseObject::render()
 	{
-		glDeleteTextures(1, &ID);
+		
 	}
-	
-	Triangle::Triangle(const GLfloat* vertices, GLsizeiptr verticesSize, const GLuint* indices, GLsizeiptr indicesSize)
-		: m_VAO(), m_VBO(const_cast<GLfloat*>(vertices), verticesSize), m_EBO(const_cast<GLuint*>(indices), indicesSize)
-		//m_VAO(), m_VBO(const_cast<GLfloat*>(vertices), verticesSize), m_EBO(const_cast<GLuint*>(indices), indicesSize) // dla wszystkich
+
+	Triangle::Triangle(const glm::mat3x3& positions)
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
 	{
-		std::cout << verticesSize << "   " << sizeof(vertices) << std::endl; //16,5 dla trojktaa
-		std::cout << indicesSize << "   " << sizeof(indices) << std::endl; //1,5 dla trojkata
+		GLfloat verticesTriangle[] =
+		{ //					COORDINATES						/        COLORS        /    TexCoord    /       NORMALS     //
+			positions[0][0], positions[0][1], positions[0][2],		1.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+			positions[1][0], positions[1][1], positions[1][2],		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+			positions[2][0], positions[2][1], positions[2][2],		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f
+		};
+
+		GLuint indicesTriangle[] = { 0, 1, 2 };
+
 		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(verticesTriangle, sizeof(verticesTriangle));
+
+		m_EBO.Bind();
+		m_EBO.BufferData(indicesTriangle, sizeof(indicesTriangle));
+
 		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
 		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
 		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
 		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+		
 		m_VAO.Unbind();
 		m_VBO.Unbind();
 		m_EBO.Unbind();
-	}
-
-	Triangle::~Triangle() 
-	{
-		m_VAO.Delete();
-		m_VBO.Delete();
-		m_EBO.Delete();
 	}
 
 	void Triangle::Draw()
@@ -131,8 +254,114 @@ namespace eng
 		m_VBO.Unbind();
 	}
 
-	/* Dla rectangle
-	void Triangle::Move(float xOffset, float yOffset, float zOffset) // zrobic const glm::fvec3& offse
+	Map::Map(const glm::mat4x3& positions, Shader& shader)
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0),
+		planksTex("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
+	{
+		GLfloat verticesMAP[] =
+		{ //					COORDINATES						/        COLORS        /    TexCoord    /       NORMALS     //
+			positions[0][0], positions[0][1], positions[0][2],		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+			positions[1][0], positions[1][1], positions[1][2],		0.0f, 0.0f, 0.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			positions[2][0], positions[2][1], positions[2][2],		0.0f, 0.0f, 0.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			positions[3][0], positions[3][1], positions[3][2],		0.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+		};
+
+		GLuint indicesMAP[] =
+		{
+			0, 1, 2,
+			0, 2, 3
+		};
+
+		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(verticesMAP, sizeof(verticesMAP));
+
+		m_EBO.Bind();
+		m_EBO.BufferData(indicesMAP, sizeof(indicesMAP));
+
+		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
+		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+
+		m_VAO.Unbind();
+		m_VBO.Unbind();
+		m_EBO.Unbind();
+
+		planksTex.texUnit(shader, "tex0", 0);
+		planksSpec.texUnit(shader, "tex1", 1);
+	}
+
+	void Map::Draw()
+	{
+		planksTex.Bind();
+		planksSpec.Bind();
+
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
+
+		planksTex.Unbind();
+		planksSpec.Unbind();
+	}
+
+	Piramid::Piramid(const glm::mat3x3& position)
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0),
+		brick("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	{
+		GLfloat verticesPIRAMID[] =
+		{ //     COORDINATES     /        COLORS      /   TexCoord     /       NORMALS     //
+			-0.25f, 0.0f,  0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			-0.25f, 0.0f, -0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			 0.25f, 0.0f, -0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			 0.25f, 0.0f,  0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			 0.0f,  0.4f,  0.0f,      0.92f, 0.86f, 0.76f,   2.5f, 5.0f,   0.0f, 1.0f, 0.0f
+		};
+
+		GLuint indicesPIRAMID[] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 1, 4,
+			1, 2, 4,
+			2, 3, 4,
+			3, 0, 4
+		};
+
+		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(verticesPIRAMID, sizeof(verticesPIRAMID));
+
+		m_EBO.Bind();
+		m_EBO.BufferData(indicesPIRAMID, sizeof(indicesPIRAMID));
+
+		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
+		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+
+		m_VAO.Unbind();
+		m_VBO.Unbind();
+		m_EBO.Unbind();
+
+		//brick.texUnit(shader, "tex0", 0);
+	}
+
+	void Piramid::Draw()
+	{
+		brick.Bind();
+
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
+
+		brick.Unbind();
+	}
+
+	void Piramid::Move(const glm::fvec3& offset)
 	{
 		m_VBO.Bind();
 
@@ -140,28 +369,16 @@ namespace eng
 		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		if (vertices != nullptr)
 		{
-			// Update the positions of the vertices of the first triangle
-			for (int i = 0; i < 3; ++i)
+			// Update the positions of the vertices
+			for (int i = 0; i < 5; ++i) // У пирамиды 5 вершин
 			{
-				// Calculate the index of the current vertex of the first triangle
+				// Calculate the index of the current vertex
 				int startIndex = i * 11; // Assuming each vertex has 11 elements (3 for position, 3 for color, 2 for texture, and 3 for normal)
 
 				// Update the position of the vertex
-				vertices[startIndex] += xOffset;
-				vertices[startIndex + 1] += yOffset;
-				vertices[startIndex + 2] += zOffset;
-			}
-
-			// Update the positions of the vertices of the second triangle
-			for (int i = 3; i < 6; ++i)
-			{
-				// Calculate the index of the current vertex of the second triangle
-				int startIndex = i * 11; // Assuming each vertex has 11 elements (3 for position, 3 for color, 2 for texture, and 3 for normal)
-
-				// Update the position of the vertex
-				vertices[startIndex] += xOffset;
-				vertices[startIndex + 1] += yOffset;
-				vertices[startIndex + 2] += zOffset;
+				vertices[startIndex] += offset.x;
+				vertices[startIndex + 1] += offset.y;
+				vertices[startIndex + 2] += offset.z;
 			}
 
 			// Unmap the buffer data
@@ -171,5 +388,204 @@ namespace eng
 		// Unbind the VBO
 		m_VBO.Unbind();
 	}
-	*/
+
+	Sun::Sun(const glm::mat3x3& position) 
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
+	{
+		GLfloat lightVertices[] =
+		{ //     COORDINATES     //
+			-0.1f, -0.1f,  0.1f,
+			-0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f, -0.1f,
+			 0.1f, -0.1f,  0.1f,
+			-0.1f,  0.1f,  0.1f,
+			-0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f, -0.1f,
+			 0.1f,  0.1f,  0.1f
+		};
+
+		GLuint lightIndices[] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 4, 7,
+			0, 7, 3,
+			3, 7, 6,
+			3, 6, 2,
+			2, 6, 5,
+			2, 5, 1,
+			1, 5, 4,
+			1, 4, 0,
+			4, 5, 6,
+			4, 6, 7
+		};
+
+		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(lightVertices, sizeof(lightVertices));
+
+		m_EBO.Bind();
+		m_EBO.BufferData(lightIndices, sizeof(lightIndices));
+
+		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+
+		m_VAO.Unbind();
+		m_VBO.Unbind();
+		m_EBO.Unbind();
+	}
+
+	void Sun::Draw()
+	{
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
+	}
+
+	void Sun::Move()
+	{
+
+	}
+	void Sun::CirclesAround()
+	{
+
+	}
+
+	Cube::Cube(const glm::fvec3& pos)
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
+	{
+		GLfloat verticesCube[] =
+		{ //				COORDINATES			   	  /		  COLORS        /    TexCoord      /       NORMALS        //
+			// Front face
+			pos.x - 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        0.0f, 1.0f, 0.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        0.0f, 1.0f, 0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        0.0f, 1.0f, 0.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        0.0f, 1.0f, 0.0f,
+			// Back face
+			pos.x - 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+			// Left face
+			pos.x - 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        -1.0f, 0.0f, 0.0f,
+			// Right face
+			pos.x + 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         1.0f, 0.0f, 0.0f,
+			// Top face
+			pos.x - 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         0.0f, 0.0f, 1.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         0.0f, 0.0f, 1.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         0.0f, 0.0f, 1.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         0.0f, 0.0f, 1.0f,
+			// Bottom face
+			pos.x - 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         0.0f, 0.0f, -1.0f,
+			pos.x - 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         0.0f, 0.0f, -1.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         0.0f, 0.0f, -1.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         0.0f, 0.0f, -1.0f
+		};
+
+		GLuint indicesCube[] =
+		{
+			// Front face
+			0, 1, 2,
+			2, 3, 0,
+			// Back face
+			4, 5, 6,
+			6, 7, 4,
+			// Left face
+			8, 9, 10,
+			10, 11, 8,
+			// Right face
+			12, 13, 14,
+			14, 15, 12,
+			// Top face
+			16, 17, 18,
+			18, 19, 16,
+			// Bottom face
+			20, 21, 22,
+			22, 23, 20
+		};
+
+		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(verticesCube, sizeof(verticesCube));
+
+		m_EBO.Bind();
+		m_EBO.BufferData(indicesCube, sizeof(indicesCube));
+
+		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
+		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+
+		m_VAO.Unbind();
+		m_VBO.Unbind();
+		m_EBO.Unbind();
+	}
+
+	void Cube::Draw()
+	{
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
+	}
+	
+	void Cube::Move(const glm::fvec3& offset)
+	{
+		m_VBO.Bind();
+
+		// Map the buffer data to a pointer so we can modify it
+		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		if (vertices != nullptr)
+		{
+			// Update the positions of all vertices
+			for (int i = 0; i < 24; ++i) // There are 24 vertices in total (3 for each face)
+			{
+				// Calculate the index of the current vertex
+				int startIndex = i * 11; // Each vertex has 11 elements
+
+				// Update the position of the vertex
+				vertices[startIndex] += offset.x;
+				vertices[startIndex + 1] += offset.y;
+				vertices[startIndex + 2] += offset.z;
+			}
+
+			// Unmap the buffer data
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+		}
+
+		// Unbind the VBO
+		m_VBO.Unbind();
+	}
+
+
+	Budynek::Budynek(const glm::fvec3& pos, Shader& shader) : Cube(pos), 
+		texture(texturePaths, GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	{
+		texture.texUnit(shader, "tex0", 0);
+	}
+
+	void Budynek::Draw()
+	{
+		texture.Bind();
+
+		BindVAO();
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawElements(GL_TRIANGLES, GetEBOCount(), GL_UNSIGNED_INT, 0);
+		UnbindVAO();
+
+		//m_VAO.Bind();
+		//glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		//m_VAO.Unbind();
+
+		texture.Unbind();
+	}
+
+
 }

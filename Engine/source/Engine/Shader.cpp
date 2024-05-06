@@ -70,8 +70,7 @@ namespace eng
 		glUseProgram(ID);
 	}
 
-	// Deletes the Shader Program
-	void Shader::Delete()
+	Shader::~Shader()
 	{
 		glDeleteProgram(ID);
 	}

@@ -15,13 +15,14 @@ namespace eng::inter // engine::internal
 		GLuint ID;
 		// Constructor that generates a Vertex Buffer Object and links it to vertices
 		VBO(GLfloat* vertices, GLsizeiptr size);
+		~VBO();
 
 		// Binds the VBO
 		void Bind();
 		// Unbinds the VBO
 		void Unbind();
-		// Deletes the VBO
-		void Delete();
+
+		void BufferData(GLfloat* vertices, GLsizeiptr size);
 	};
 
 	class VAO
@@ -31,6 +32,7 @@ namespace eng::inter // engine::internal
 		GLuint ID;
 		// Constructor that generates a VAO ID
 		VAO();
+		~VAO();
 
 		// Links a VBO to the VAO using a certain layout
 		void LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
@@ -38,8 +40,6 @@ namespace eng::inter // engine::internal
 		void Bind();
 		// Unbinds the VAO
 		void Unbind();
-		// Deletes the VAO
-		void Delete();
 
 		GLuint GetId() const;
 	};
@@ -51,14 +51,14 @@ namespace eng::inter // engine::internal
 		GLuint ID;
 		// Constructor that generates a Elements Buffer Object and links it to indices
 		EBO(GLuint* indices, GLsizeiptr size);
+		~EBO();
 
 		// Binds the EBO
 		void Bind();
 		// Unbinds the EBO
 		void Unbind();
-		// Deletes the EBO
-		void Delete();
 
+		void BufferData(GLuint* indices, GLsizeiptr size);
 		GLsizei GetCount() const;
 	};
 }
