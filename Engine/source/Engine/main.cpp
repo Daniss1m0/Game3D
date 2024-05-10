@@ -15,6 +15,7 @@ int main()
 	Engine engine(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
 	// Debugowanie
+	glDebugMessageControl(GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_OTHER, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(MessageCallback, 0);
 

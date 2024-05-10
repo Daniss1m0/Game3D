@@ -33,13 +33,13 @@ namespace eng
 		std::cout << "OpenGL: " << glGetString(GL_VERSION) << std::endl;
 
 		// ---------------------------------------------
-		//		Shadery
+		//		Domyślne shadery
 		// ---------------------------------------------
 		Shader shaderProgram("shaders/test/vertex.glsl", "shaders/test/fragment.glsl");
 		Shader lightShader("shaders/test/lightvertex.glsl", "shaders/test/lightfragment.glsl");
 
 		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+		glm::vec3 lightPos = glm::vec3(0.0f, 1.0f, 0.0f); //zmieniac z sloncem!
 		glm::mat4 lightModel = glm::mat4(1.0f);
 		lightModel = glm::translate(lightModel, lightPos);
 
@@ -70,26 +70,31 @@ namespace eng
 		Map map(positions, shaderProgram);
 
 		glm::fvec3 pos(0.2f, 0.2f, 0.2f);
+		glm::fvec3 pos2(0.1f, 0.1f, 0.1f);
+		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 
-		Budynek bud1(pos, shaderProgram);
+		Budynek bud1(pos2, shaderProgram);
 		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 		//Triangle triangle2(positions);
-		glm::fvec3 offset(1.0f, 0.5f, 1.0f);
+		//glm::fvec3 offset(1.0f, 0.0f, 0.0f);
 		//triangle2.Move(offset);
 
-		glm::mat3x3 posp;
-		positions[0] = glm::vec3(-1.0f, 0.0f, 1.0f);
-		positions[1] = glm::vec3(-1.0f, 0.0f, -1.0f);
-		positions[2] = glm::vec3(1.0f, 0.0f, -1.0f);
-
-		//Piramid piramid(posp);
+		//Piramid piramid(pos2);
 		//piramid.Move(offset);
 
-		Sun sun(posp);
+		Sun sun(posSun);
+
+		//sun.Move(offset);
 
 		Renderer* renderer = Renderer::Get();
+
+		float sunRotationAngle = 0.0f;
+		float sunRotationSpeed = 0.01f;
+		float sunCircleRadius = 0.01f;
+		float a = 0.01f;
+		float b = 0.01f;
 
 		while (!m_Window.ShouldClose())
 		{
@@ -97,9 +102,16 @@ namespace eng
 			//		Logika
 			// ---------------------------------------------
 			m_Window.HandleEvents();
+			glm::vec3 newPos = glm::vec3(-cos(sunRotationAngle) * sunCircleRadius, -sin(sunRotationAngle) * sunCircleRadius, 0.0f);
+			//glm::vec3 newPos = glm::vec3(a * cos(sunRotationAngle), b * sin(sunRotationAngle), 0.000f);
+			sun.Move(newPos);
+			sunRotationAngle += sunRotationSpeed;
+			lightPos += newPos;
+			lightModel = glm::translate(lightModel, newPos);
+			//lightModel = glm::translate(glm::mat4(1.0f), lightPos);
+			glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+			glUniform3f(glGetUniformLocation(lightShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-			// if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_P) == GLFW_PRESS)
-			
 			// ---------------------------------------------
 			//		Rysowanie
 			// ---------------------------------------------
@@ -111,25 +123,19 @@ namespace eng
 
 			shaderProgram.Activate();
 
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+			glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+			glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
 			glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), m_Camera.Position.x, m_Camera.Position.y, m_Camera.Position.z);
 
 			m_Camera.Matrix(shaderProgram, "camMatrix");
 
 			//TODO: Optymalizowac wywoływanie obiektów. Ulepszyc metode Draw(renderer).
 
-			//brick.Bind();
-			//piramid.Draw_with_Indices();
-			//cube.Draw();
-			//glActiveTexture(GL_TEXTURE0);
-			//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-			//texture.Bind();
-			//piramid.Draw();
 			bud1.Draw();
 			map.Draw();
-			
-			//triangle2.Draw();
 
-			// Tells OpenGL which Shader Program we want to use
 			lightShader.Activate();
 			// Export the camMatrix to the Vertex Shader of the light cube
 			m_Camera.Matrix(lightShader, "camMatrix");

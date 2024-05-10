@@ -35,7 +35,15 @@ namespace eng
 
 	class BaseObject {
 	public:
-		void render();
+		BaseObject();
+
+		void Render(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize);
+		virtual void Draw();
+
+	protected:
+		inter::VAO m_VAO;
+		inter::VBO m_VBO;
+		inter::EBO m_EBO;
 	};
 
 	class Triangle : public BaseObject
@@ -43,30 +51,17 @@ namespace eng
 	public:
 		Triangle(const glm::mat3x3& position);
 
-		void Draw();
-		void Draw(Renderer* renderer);
-
 		void Move(const glm::fvec3& offset);
-		//void Rotate();
-
-	private:
-		inter::VAO m_VAO;
-		inter::VBO m_VBO;
-		inter::EBO m_EBO;
 	};
 
-	class Map : public BaseObject //rectangle wsm
+	class Map : public BaseObject
 	{
 	public:
-		Map(const glm::mat4x3& positions, Shader& shader);
+		Map(const glm::mat4x3& pos, Shader& shader);
 
-		void Draw();
+		void Draw() override;
 
 	private:
-		inter::VAO m_VAO;
-		inter::VBO m_VBO;
-		inter::EBO m_EBO;
-
 		Texture planksTex;
 		Texture planksSpec;
 	};
@@ -74,28 +69,23 @@ namespace eng
 	class Piramid : public BaseObject
 	{
 	public:
-		Piramid(const glm::mat3x3& position); //dorobic parameter!
+		Piramid(const glm::fvec3& pos); //dorobic parameter!
 
-		void Draw();
-
+		void Draw() override;
 		void Move(const glm::fvec3& offset);
-	private:
-		inter::VAO m_VAO;
-		inter::VBO m_VBO;
-		inter::EBO m_EBO;
 
+	private:
 		Texture brick;
 	};
 
 	class Sun : public BaseObject
 	{
 	public:
-		Sun(const glm::mat3x3& position);
+		Sun(const glm::fvec3& pos);
 
 		void Draw();
+		void Move(const glm::fvec3& offset);
 
-		void Move();
-		void CirclesAround(); //dorobic!
 	private:
 		inter::VAO m_VAO;
 		inter::VBO m_VBO;
@@ -107,24 +97,14 @@ namespace eng
 	public:
 		Cube(const glm::fvec3& pos);
 
-		void Draw();
 		void Move(const glm::fvec3& offset);
-
-		void BindVAO() { m_VAO.Bind(); }
-		void UnbindVAO() { m_VAO.Unbind(); }
-		unsigned int GetEBOCount() { return m_EBO.GetCount(); }
-
-	private:
-		inter::VAO m_VAO;
-		inter::VBO m_VBO;
-		inter::EBO m_EBO;
 	};
 
 	class Budynek : public Cube {
 	public:
 		Budynek(const glm::fvec3& pos, Shader& shader);
 
-		void Draw();
+		void Draw() override;
 		
 		std::vector<std::string> texturePaths = {
 		"textures/brick.png",

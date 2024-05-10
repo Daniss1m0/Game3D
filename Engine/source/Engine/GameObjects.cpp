@@ -184,13 +184,39 @@ namespace eng
 		glBindTexture(type, 0);
 	}
 
-	void BaseObject::render()
+	BaseObject::BaseObject() 
+		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
 	{
-		
+	}
+
+	void BaseObject::Render(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize)
+	{
+		m_VAO.Bind();
+
+		m_VBO.Bind();
+		m_VBO.BufferData(vertices, verticesSize);
+
+		m_EBO.Bind();
+		m_EBO.BufferData(indices, indicesSize);
+
+		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
+		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
+		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+
+		m_VAO.Unbind();
+		m_VBO.Unbind();
+		m_EBO.Unbind();
+	}
+
+	void BaseObject::Draw()
+	{
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
 	}
 
 	Triangle::Triangle(const glm::mat3x3& positions)
-		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
 	{
 		GLfloat verticesTriangle[] =
 		{ //					COORDINATES						/        COLORS        /    TexCoord    /       NORMALS     //
@@ -201,37 +227,9 @@ namespace eng
 
 		GLuint indicesTriangle[] = { 0, 1, 2 };
 
-		m_VAO.Bind();
-
-		m_VBO.Bind();
-		m_VBO.BufferData(verticesTriangle, sizeof(verticesTriangle));
-
-		m_EBO.Bind();
-		m_EBO.BufferData(indicesTriangle, sizeof(indicesTriangle));
-
-		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-		
-		m_VAO.Unbind();
-		m_VBO.Unbind();
-		m_EBO.Unbind();
+		Render(verticesTriangle, sizeof(verticesTriangle), indicesTriangle, sizeof(indicesTriangle));
 	}
-
-	void Triangle::Draw()
-	{
-		m_VAO.Bind();
-		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
-		m_VAO.Unbind();
-	}
-	/*
-	void Triangle::Draw(Renderer* renderer)
-	{
-		renderer->Draw(m_VAO.GetId());
-	}
-	*/
-
+	
 	void Triangle::Move(const glm::fvec3& offset)
 	{
 		m_VBO.Bind();
@@ -253,11 +251,10 @@ namespace eng
 
 		m_VBO.Unbind();
 	}
-
+	
 	Map::Map(const glm::mat4x3& positions, Shader& shader)
-		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0),
-		planksTex("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
+		: planksTex("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		  planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
 	{
 		GLfloat verticesMAP[] =
 		{ //					COORDINATES						/        COLORS        /    TexCoord    /       NORMALS     //
@@ -273,22 +270,7 @@ namespace eng
 			0, 2, 3
 		};
 
-		m_VAO.Bind();
-
-		m_VBO.Bind();
-		m_VBO.BufferData(verticesMAP, sizeof(verticesMAP));
-
-		m_EBO.Bind();
-		m_EBO.BufferData(indicesMAP, sizeof(indicesMAP));
-
-		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-
-		m_VAO.Unbind();
-		m_VBO.Unbind();
-		m_EBO.Unbind();
+		Render(verticesMAP, sizeof(verticesMAP), indicesMAP, sizeof(indicesMAP));
 
 		planksTex.texUnit(shader, "tex0", 0);
 		planksSpec.texUnit(shader, "tex1", 1);
@@ -307,17 +289,16 @@ namespace eng
 		planksSpec.Unbind();
 	}
 
-	Piramid::Piramid(const glm::mat3x3& position)
-		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0),
-		brick("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	Piramid::Piramid(const glm::fvec3& pos)
+		: brick("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	{
 		GLfloat verticesPIRAMID[] =
-		{ //     COORDINATES     /        COLORS      /   TexCoord     /       NORMALS     //
-			-0.25f, 0.0f,  0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			-0.25f, 0.0f, -0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			 0.25f, 0.0f, -0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			 0.25f, 0.0f,  0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			 0.0f,  0.4f,  0.0f,      0.92f, 0.86f, 0.76f,   2.5f, 5.0f,   0.0f, 1.0f, 0.0f
+		{ //				 COORDINATES					/        COLORS      /   TexCoord     /       NORMALS     //
+			pos.x - 0.25f, pos.y + 0.0f, pos.z + 0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x - 0.25f, pos.y + 0.0f, pos.z - 0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.25f, pos.y + 0.0f, pos.z - 0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.25f, pos.y + 0.0f, pos.z + 0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.00f, pos.y + 0.4f, pos.z + 0.00f,     0.92f, 0.86f, 0.76f,   2.5f, 5.0f,   0.0f, 1.0f, 0.0f
 		};
 
 		GLuint indicesPIRAMID[] =
@@ -330,22 +311,7 @@ namespace eng
 			3, 0, 4
 		};
 
-		m_VAO.Bind();
-
-		m_VBO.Bind();
-		m_VBO.BufferData(verticesPIRAMID, sizeof(verticesPIRAMID));
-
-		m_EBO.Bind();
-		m_EBO.BufferData(indicesPIRAMID, sizeof(indicesPIRAMID));
-
-		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-
-		m_VAO.Unbind();
-		m_VBO.Unbind();
-		m_EBO.Unbind();
+		Render(verticesPIRAMID, sizeof(verticesPIRAMID), indicesPIRAMID, sizeof(indicesPIRAMID));
 
 		//brick.texUnit(shader, "tex0", 0);
 	}
@@ -365,43 +331,37 @@ namespace eng
 	{
 		m_VBO.Bind();
 
-		// Map the buffer data to a pointer so we can modify it
 		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		if (vertices != nullptr)
 		{
-			// Update the positions of the vertices
-			for (int i = 0; i < 5; ++i) // У пирамиды 5 вершин
+			for (int i = 0; i < 5; ++i)
 			{
-				// Calculate the index of the current vertex
-				int startIndex = i * 11; // Assuming each vertex has 11 elements (3 for position, 3 for color, 2 for texture, and 3 for normal)
+				int startIndex = i * 11;
 
-				// Update the position of the vertex
 				vertices[startIndex] += offset.x;
 				vertices[startIndex + 1] += offset.y;
 				vertices[startIndex + 2] += offset.z;
 			}
 
-			// Unmap the buffer data
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 		}
 
-		// Unbind the VBO
 		m_VBO.Unbind();
 	}
 
-	Sun::Sun(const glm::mat3x3& position) 
+	Sun::Sun(const glm::fvec3& pos)
 		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
 	{
 		GLfloat lightVertices[] =
 		{ //     COORDINATES     //
-			-0.1f, -0.1f,  0.1f,
-			-0.1f, -0.1f, -0.1f,
-			 0.1f, -0.1f, -0.1f,
-			 0.1f, -0.1f,  0.1f,
-			-0.1f,  0.1f,  0.1f,
-			-0.1f,  0.1f, -0.1f,
-			 0.1f,  0.1f, -0.1f,
-			 0.1f,  0.1f,  0.1f
+			pos.x - 0.1f, pos.y - 0.1f, pos.z + 0.1f,
+			pos.x - 0.1f, pos.y - 0.1f, pos.z - 0.1f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z + 0.1f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z + 0.1f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z - 0.1f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z - 0.1f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z + 0.1f
 		};
 
 		GLuint lightIndices[] =
@@ -442,17 +402,29 @@ namespace eng
 		m_VAO.Unbind();
 	}
 
-	void Sun::Move()
+	void Sun::Move(const glm::fvec3& offset)
 	{
+		m_VBO.Bind();
 
-	}
-	void Sun::CirclesAround()
-	{
+		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		if (vertices != nullptr)
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				int startIndex = i * 3;
 
+				vertices[startIndex] += offset.x;
+				vertices[startIndex + 1] += offset.y;
+				vertices[startIndex + 2] += offset.z;
+			}
+
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+		}
+
+		m_VBO.Unbind();
 	}
 
 	Cube::Cube(const glm::fvec3& pos)
-		: m_VAO(), m_VBO(nullptr, 0), m_EBO(nullptr, 0)
 	{
 		GLfloat verticesCube[] =
 		{ //				COORDINATES			   	  /		  COLORS        /    TexCoord      /       NORMALS        //
@@ -510,59 +482,31 @@ namespace eng
 			22, 23, 20
 		};
 
-		m_VAO.Bind();
-
-		m_VBO.Bind();
-		m_VBO.BufferData(verticesCube, sizeof(verticesCube));
-
-		m_EBO.Bind();
-		m_EBO.BufferData(indicesCube, sizeof(indicesCube));
-
-		m_VAO.LinkAttrib(m_VBO, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-		m_VAO.LinkAttrib(m_VBO, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-		m_VAO.LinkAttrib(m_VBO, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-
-		m_VAO.Unbind();
-		m_VBO.Unbind();
-		m_EBO.Unbind();
-	}
-
-	void Cube::Draw()
-	{
-		m_VAO.Bind();
-		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
-		m_VAO.Unbind();
+		Render(verticesCube, sizeof(verticesCube), indicesCube, sizeof(indicesCube));
 	}
 	
 	void Cube::Move(const glm::fvec3& offset)
 	{
 		m_VBO.Bind();
 
-		// Map the buffer data to a pointer so we can modify it
 		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		if (vertices != nullptr)
 		{
-			// Update the positions of all vertices
-			for (int i = 0; i < 24; ++i) // There are 24 vertices in total (3 for each face)
+			for (int i = 0; i < 24; ++i) 
 			{
-				// Calculate the index of the current vertex
-				int startIndex = i * 11; // Each vertex has 11 elements
+				int startIndex = i * 11; 
 
-				// Update the position of the vertex
+
 				vertices[startIndex] += offset.x;
 				vertices[startIndex + 1] += offset.y;
 				vertices[startIndex + 2] += offset.z;
 			}
 
-			// Unmap the buffer data
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 		}
 
-		// Unbind the VBO
 		m_VBO.Unbind();
 	}
-
 
 	Budynek::Budynek(const glm::fvec3& pos, Shader& shader) : Cube(pos), 
 		texture(texturePaths, GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
@@ -574,15 +518,11 @@ namespace eng
 	{
 		texture.Bind();
 
-		BindVAO();
+		m_VAO.Bind();
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glDrawElements(GL_TRIANGLES, GetEBOCount(), GL_UNSIGNED_INT, 0);
-		UnbindVAO();
-
-		//m_VAO.Bind();
-		//glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
-		//m_VAO.Unbind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
 
 		texture.Unbind();
 	}
