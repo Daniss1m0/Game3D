@@ -16,6 +16,7 @@ in vec3 crntPos;
 // Gets the Texture Units from the main function
 uniform sampler2D tex0;
 uniform sampler2D tex1;
+uniform samplerCube cubemap;
 // Gets the color of the light from the main function
 uniform vec4 lightColor;
 // Gets the position of the light from the main function
@@ -50,7 +51,9 @@ vec4 pointLight()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
 	float specular = specAmount * specularLight;
 
-	return (texture(tex0, texCoord) * (diffuse * inten + ambient) + texture(tex1, texCoord).r * specular * inten) * lightColor;
+	vec4 cubemapHandler = texture(cubemap, normalize(crntPos));// * (diffuse * inten + ambient);
+
+	return (texture(tex0, texCoord) * (diffuse * inten + ambient) + texture(tex1, texCoord).r * specular * inten + cubemapHandler) * lightColor;
 }
 
 vec4 direcLight()
@@ -101,7 +104,7 @@ vec4 spotLight()
 	return (texture(tex0, texCoord) * (diffuse * inten + ambient) + texture(tex1, texCoord).r * specular * inten) * lightColor;
 }
 
-
+ 
 void main()
 {
 	// outputs final color

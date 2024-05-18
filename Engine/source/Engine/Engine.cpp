@@ -70,12 +70,13 @@ namespace eng
 		Map map(positions, shaderProgram);
 
 		glm::fvec3 pos(0.2f, 0.2f, 0.2f);
-		glm::fvec3 pos2(0.1f, 0.1f, 0.1f);
+		glm::fvec3 pos2(0.1f, 0.2f, 0.1f);
 		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 
 		Budynek bud1(pos2, shaderProgram);
+		//bud1.Move(glm::vec3(0.3f, 0.0f, 0.3f));
 		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 		//Triangle triangle2(positions);
 		//glm::fvec3 offset(1.0f, 0.0f, 0.0f);

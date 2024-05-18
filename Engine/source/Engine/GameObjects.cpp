@@ -55,108 +55,41 @@ namespace eng
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
-		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + slot);
 		unit = slot;
 		glBindTexture(texType, ID);
 
-		// Configures the type of algorithm that is used to make the image smaller or bigger
-		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		// Configures the way the texture repeats (if it does at all)
-		glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
-		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
-
-		// Loads and assigns each image to the OpenGL Texture object
-
-		for (size_t i = 0; i < images.size(); ++i)
+		int width, height, nrChannels;
+		for (unsigned int i = 0; i < images.size(); i++)
 		{
-			std::cout << images[i] << std::endl;
-			// Stores the width, height, and the number of color channels of the image
-			int widthImg, heightImg, numColCh;
-			// Flips the image so it appears right side up
-			stbi_set_flip_vertically_on_load(true);
-			// Reads the image from a file and stores it in bytes
-			unsigned char* bytes = stbi_load(images[i].c_str(), &widthImg, &heightImg, &numColCh, 0);
-			if (bytes)
+			unsigned char* data = stbi_load(images[i].c_str(), &width, &height, &nrChannels, 0);
+			if (data)
 			{
-				glTexImage2D(
-					GL_TEXTURE_2D, // Assuming 2D textures for simplicity, can be modified for other types
-					0,
-					GL_RGBA,
-					widthImg,
-					heightImg,
-					0,
-					format,
-					pixelType,
-					bytes
-				);
+				// Print information about the image
+				std::cout << "Loaded image: " << images[i] << ", Width: " << width << ", Height: " << height << ", Channels: " << nrChannels << std::endl;
 
-				// Deletes the image data as it is already in the OpenGL Texture object
-				stbi_image_free(bytes);
+				// Assign texture parameters and bind texture type
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+					0, format, width, height, 0, format, pixelType, data
+				);
+				stbi_image_free(data);
 			}
 			else
 			{
-				std::cout << "Failed to load texture: " << images[i] << std::endl;
+				std::cerr << "Cubemap texture failed to load at path: " << images[i] << std::endl;
+				stbi_image_free(data);
 			}
 		}
 
-		// Generates MipMaps
-		glGenerateMipmap(texType);
-
-		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
-		glBindTexture(texType, 0);
-
-		/* Inna wersja
-		// Creates the cubemap texture object
-		unsigned int cubemapTexture;
-		glGenTextures(1, &cubemapTexture);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// Set texture parameters
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		// These are very important to prevent seams
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		// This might help with seams on some systems
-		//glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-
-		// Cycles through all the textures and attaches them to the cubemap object
-		for (unsigned int i = 0; i < 6; i++)
-		{
-			int width, height, nrChannels;
-			unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
-			if (data)
-			{
-				stbi_set_flip_vertically_on_load(false);
-				glTexImage2D
-				(
-					GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-					0,
-					GL_RGB,
-					width,
-					height,
-					0,
-					GL_RGB,
-					GL_UNSIGNED_BYTE,
-					data
-				);
-				stbi_image_free(data);
-			}
-			else
-			{
-				std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
-				stbi_image_free(data);
-				//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-			}
-		}
-		*/
 	}
+
+
 
 	Texture::~Texture()
 	{
@@ -460,6 +393,46 @@ namespace eng
 			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         0.0f, 0.0f, -1.0f
 		};
 
+		GLfloat vertices[] =
+		{
+			//        COORDINATES         /         COLORS          /   TexCoord     /      NORMALS       //
+			pos.x - 0.1f, pos.y - 0.1f, pos.z + 0.1f,    1.0f, 0.0f, 0.0f,    0.0f, 0.0f,    0.0f,  0.0f,  1.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z + 0.1f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,    0.0f,  0.0f,  1.0f,
+			pos.x + 0.1f, pos.y - 0.1f, pos.z - 0.1f,    0.0f, 0.0f, 1.0f,    1.0f, 1.0f,    0.0f,  0.0f, -1.0f,
+			pos.x - 0.1f, pos.y - 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 0.0f,    0.0f, 1.0f,    0.0f,  0.0f, -1.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z + 0.1f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f,    0.0f,  1.0f,  0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z + 0.1f,    1.0f, 0.0f, 1.0f,    1.0f, 0.0f,    0.0f,  1.0f,  0.0f,
+			pos.x + 0.1f, pos.y + 0.1f, pos.z - 0.1f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f,    0.0f,  1.0f,  0.0f,
+			pos.x - 0.1f, pos.y + 0.1f, pos.z - 0.1f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,    0.0f,  1.0f,  0.0f
+		};
+
+
+		GLuint indices[] =
+		{
+			// Нижняя грань
+			0, 1, 2,
+			2, 3, 0,
+
+			// Верхняя грань
+			4, 5, 6,
+			6, 7, 4,
+
+			// Передняя грань
+			0, 1, 5,
+			5, 4, 0,
+
+			// Задняя грань
+			2, 3, 7,
+			7, 6, 2,
+
+			// Левая грань
+			0, 3, 7,
+			7, 4, 0,
+
+			// Правая грань
+			1, 2, 6,
+			6, 5, 1
+		};
 		GLuint indicesCube[] =
 		{
 			// Front face
@@ -482,49 +455,66 @@ namespace eng
 			22, 23, 20
 		};
 
-		Render(verticesCube, sizeof(verticesCube), indicesCube, sizeof(indicesCube));
+		
+
+		Render(vertices, sizeof(vertices), indices, sizeof(indices));
 	}
 	
 	void Cube::Move(const glm::fvec3& offset)
 	{
 		m_VBO.Bind();
 
+		// Запрашиваем указатель на данные в буфере
 		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		if (vertices != nullptr)
 		{
-			for (int i = 0; i < 24; ++i) 
+			// Используем константы для улучшения читаемости кода
+			const int vertexSize = 11; // Размер одной вершины
+			const int coordinateOffset = 0; // Смещение для координат
+			const int stride = 11; // Шаг между вершинами
+
+			// Обходим каждую вершину куба
+			for (int i = 0; i < 8; ++i)
 			{
-				int startIndex = i * 11; 
+				// Вычисляем начальный индекс для текущей вершины
+				int startIndex = i * stride;
 
-
-				vertices[startIndex] += offset.x;
-				vertices[startIndex + 1] += offset.y;
-				vertices[startIndex + 2] += offset.z;
+				// Смещаем координаты вершины на заданный offset
+				vertices[startIndex + coordinateOffset] += offset.x;
+				vertices[startIndex + coordinateOffset + 1] += offset.y;
+				vertices[startIndex + coordinateOffset + 2] += offset.z;
 			}
 
+			// Отменяем отображение буфера после его изменения
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 		}
 
 		m_VBO.Unbind();
 	}
 
+
 	Budynek::Budynek(const glm::fvec3& pos, Shader& shader) : Cube(pos), 
-		texture(texturePaths, GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+		texture(texturePaths, GL_TEXTURE_CUBE_MAP, 2, GL_RGBA, GL_UNSIGNED_BYTE)
 	{
-		texture.texUnit(shader, "tex0", 0);
+		texture.texUnit(shader, "cubemap", 2);
 	}
 
 	void Budynek::Draw()
 	{
-		texture.Bind();
-
+		//texture.Bind();
+		//glDepthMask(GL_FALSE);
+		glDepthFunc(GL_LEQUAL);
 		m_VAO.Bind();
+		texture.Bind();
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
-		m_VAO.Unbind();
-
 		texture.Unbind();
+		m_VAO.Unbind();
+		//glDepthMask(GL_TRUE);
+
+		//texture.Unbind();
 	}
 
 

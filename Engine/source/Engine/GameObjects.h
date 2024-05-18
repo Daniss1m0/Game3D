@@ -13,8 +13,6 @@
 #include <Engine/Renderer.h>
 #include <Engine/Shader.h>
 
-//TODO: Dziedziczenie. Np. Draw() dla kazdego.
-
 namespace eng
 {
 	class Texture
@@ -69,7 +67,7 @@ namespace eng
 	class Piramid : public BaseObject
 	{
 	public:
-		Piramid(const glm::fvec3& pos); //dorobic parameter!
+		Piramid(const glm::fvec3& pos);
 
 		void Draw() override;
 		void Move(const glm::fvec3& offset);
@@ -107,12 +105,12 @@ namespace eng
 		void Draw() override;
 		
 		std::vector<std::string> texturePaths = {
-		"textures/brick.png",
+		"textures/planks.png",
 		"textures/planks.png",
 		"textures/brick.png",
 		"textures/planks.png",
 		"textures/brick.png",
-		"textures/brick.png"
+		"textures/planks.png"
 		};
 
 	private:		
