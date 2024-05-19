@@ -15,9 +15,6 @@
 #include <Engine/Shader.h>
 #include <Engine/GameObjects.h>
 #include <Engine/Camera.h>
-#include <Engine/internal/buffers.h> //delete this later!
-
-#include <stb/stb_image.h> //
 
 #define ENG_CLEAR_COLOR glm::fvec4(0.1f, 0.1f, 0.1f, 1.0f)
 

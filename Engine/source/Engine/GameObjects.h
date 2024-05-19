@@ -23,7 +23,6 @@ namespace eng
 		GLuint unit;
 
 		Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType);
-		Texture(const std::vector<std::string>& images, GLenum texType, GLuint slot, GLenum format, GLenum pixelType);
 		~Texture();
 
 		void texUnit(Shader& shader, const char* uniform, GLuint unit);
@@ -103,18 +102,9 @@ namespace eng
 		Budynek(const glm::fvec3& pos, Shader& shader);
 
 		void Draw() override;
-		
-		std::vector<std::string> texturePaths = {
-		"textures/planks.png",
-		"textures/planks.png",
-		"textures/brick.png",
-		"textures/planks.png",
-		"textures/brick.png",
-		"textures/planks.png"
-		};
 
 	private:		
-		Texture texture;
+		std::array<Texture, 6> textures;
 	};
 
 	class Szkola : public Cube {};

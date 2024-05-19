@@ -14,13 +14,11 @@ namespace eng::inter
 		glDeleteBuffers(1, &ID);
 	}
 
-	// Binds the VBO
 	void VBO::Bind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, ID);
 	}
 
-	// Unbinds the VBO
 	void VBO::Unbind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -41,7 +39,6 @@ namespace eng::inter
 		glDeleteVertexArrays(1, &ID);
 	}
 
-	// Links a VBO to the VAO using a certain layout
 	void VAO::LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
 	{
 		VBO.Bind();
@@ -50,13 +47,11 @@ namespace eng::inter
 		VBO.Unbind();
 	}
 
-	// Binds the VAO
 	void VAO::Bind()
 	{
 		glBindVertexArray(ID);
 	}
 
-	// Unbinds the VAO
 	void VAO::Unbind()
 	{
 		glBindVertexArray(0);
@@ -74,13 +69,11 @@ namespace eng::inter
 		glDeleteBuffers(1, &ID);
 	}
 
-	// Binds the EBO
 	void EBO::Bind()
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
 	}
 
-	// Unbinds the EBO
 	void EBO::Unbind()
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

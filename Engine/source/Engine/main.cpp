@@ -1,5 +1,4 @@
-﻿// TODO: Zmieniłem strukturę projektu. Więc dużo plików tutaj jeszcze nie ma, aby każdy członek zespołu wiedział od czego zacząć. 
-// Wszystkie potrzebne pliki można pobrać z repo Silnika3D (https://github.com/thekumor/PSK_3DEngine/tree/main/Engine/source/Engine).
+﻿// TODO: Doxygen. ImGUI.
 
 #include "engine.h"
 #include "internal/utility.h"

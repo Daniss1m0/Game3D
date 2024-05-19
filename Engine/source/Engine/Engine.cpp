@@ -69,8 +69,8 @@ namespace eng
 
 		Map map(positions, shaderProgram);
 
-		glm::fvec3 pos(0.2f, 0.2f, 0.2f);
-		glm::fvec3 pos2(0.1f, 0.2f, 0.1f);
+		glm::fvec3 pos(0.7f, 0.0f, 0.3f);
+		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
 		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
@@ -82,7 +82,7 @@ namespace eng
 		//glm::fvec3 offset(1.0f, 0.0f, 0.0f);
 		//triangle2.Move(offset);
 
-		//Piramid piramid(pos2);
+		Piramid piramid(pos);
 		//piramid.Move(offset);
 
 		Sun sun(posSun);
@@ -119,7 +119,6 @@ namespace eng
 			renderer->Clear(ENG_CLEAR_COLOR * 1.0f);
 
 			m_Camera.Inputs(m_Window.GetWindow());
-			// Updates and exports the camera matrix to the Vertex Shader
 			m_Camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 			shaderProgram.Activate();
@@ -132,13 +131,14 @@ namespace eng
 
 			m_Camera.Matrix(shaderProgram, "camMatrix");
 
-			//TODO: Optymalizowac wywoływanie obiektów. Ulepszyc metode Draw(renderer).
+			//TODO: Optymalizowac wywoływanie obiektów.
 
 			bud1.Draw();
 			map.Draw();
+			piramid.Draw();
 
 			lightShader.Activate();
-			// Export the camMatrix to the Vertex Shader of the light cube
+
 			m_Camera.Matrix(lightShader, "camMatrix");
 
 			sun.Draw();
