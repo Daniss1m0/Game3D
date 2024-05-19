@@ -4,31 +4,49 @@
 
 namespace eng
 {
-	Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType)
-	{
+	Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType) {
 		type = texType;
 
 		int widthImg, heightImg, numColCh;
 		stbi_set_flip_vertically_on_load(true);
-		unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
 
-		glGenTextures(1, &ID);
-		glActiveTexture(GL_TEXTURE0 + slot);
-		unit = slot;
+		unsigned char* bytes = nullptr;
+		try {
+			bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
+			if (!bytes) {
+				throw std::runtime_error("Failed to load texture: " + std::string(image));
+			}
 
-		glBindTexture(texType, ID);
+			std::cout << "Loaded texture: " << image << " (" << widthImg << "x" << heightImg << ", " << numColCh << " channels)" << std::endl;
 
-		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glGenTextures(1, &ID);
+			glActiveTexture(GL_TEXTURE0 + slot);
+			unit = slot;
 
-		glTexImage2D(texType, 0, GL_RGBA, widthImg, heightImg, 0, format, pixelType, bytes);
-		glGenerateMipmap(texType);
+			glBindTexture(texType, ID);
 
-		stbi_image_free(bytes);
+			glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+			glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glBindTexture(texType, 0);
+			if (format == GL_RGBA && numColCh == 3) {
+				format = GL_RGB;
+			}
+
+			glTexImage2D(texType, 0, GL_RGBA, widthImg, heightImg, 0, format, pixelType, bytes);
+			glGenerateMipmap(texType);
+
+			stbi_image_free(bytes);
+			glBindTexture(texType, 0);
+		}
+		catch (const std::runtime_error& e) {
+			if (bytes) {
+				stbi_image_free(bytes);
+			}
+			std::cerr << e.what() << std::endl;
+			throw; // Rethrow the exception to be handled by the calling code
+		}
 	}
 
 	Texture::~Texture()
@@ -123,7 +141,7 @@ namespace eng
 	}
 	
 	Map::Map(const glm::mat4x3& positions, Shader& shader)
-		: planksTex("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		: planksTex("textures/grs.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 		  planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
 	{
 		GLfloat verticesMAP[] =
@@ -354,6 +372,67 @@ namespace eng
 
 		Render(verticesCube, sizeof(verticesCube), indicesCube, sizeof(indicesCube));
 	}
+
+	Cube::Cube(const glm::fvec3& pos, const glm::fvec3& size)
+	{
+		GLfloat verticesCube[] =
+		{ //				COORDINATES			   	  /		  COLORS        /    TexCoord      /       NORMALS        //
+			// Front face
+			pos.x - size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        0.0f, 1.0f, 0.0f,
+			pos.x - size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        0.0f, 1.0f, 0.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        0.0f, 1.0f, 0.0f,
+			pos.x + size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        0.0f, 1.0f, 0.0f,
+			// Back face
+			pos.x - size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+			pos.x - size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+			pos.x + size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+			// Left face
+			pos.x - size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,        -1.0f, 0.0f, 0.0f,
+			pos.x - size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,        -1.0f, 0.0f, 0.0f,
+			// Right face
+			pos.x + size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         1.0f, 0.0f, 0.0f,
+			pos.x + size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         1.0f, 0.0f, 0.0f,
+			// Top face
+			pos.x - size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         0.0f, 0.0f, 1.0f,
+			pos.x - size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         0.0f, 0.0f, 1.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         0.0f, 0.0f, 1.0f,
+			pos.x + size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         0.0f, 0.0f, 1.0f,
+			// Bottom face
+			pos.x - size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,         0.0f, 0.0f, -1.0f,
+			pos.x - size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,         0.0f, 0.0f, -1.0f,
+			pos.x + size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 1.0f,         0.0f, 0.0f, -1.0f,
+			pos.x + size.x/2, pos.y - size.y/2, pos.z - size.z/2,    1.0f, 1.0f, 1.0f,       1.0f, 0.0f,         0.0f, 0.0f, -1.0f
+		};
+
+		GLuint indicesCube[] =
+		{
+			// Front face
+			0, 1, 2,
+			2, 3, 0,
+			// Back face
+			4, 5, 6,
+			6, 7, 4,
+			// Left face
+			8, 9, 10,
+			10, 11, 8,
+			// Right face
+			12, 13, 14,
+			14, 15, 12,
+			// Top face
+			16, 17, 18,
+			18, 19, 16,
+			// Bottom face
+			20, 21, 22,
+			22, 23, 20
+		};
+
+		Render(verticesCube, sizeof(verticesCube), indicesCube, sizeof(indicesCube));
+	}
 	
 	void Cube::Move(const glm::fvec3& offset)
 	{
@@ -402,5 +481,54 @@ namespace eng
 		m_VAO.Unbind();
 	}
 
+	Sklep::Sklep(const glm::fvec3& pos, Shader& shader) : Cube(pos,glm::fvec3(0.1, 0.1, 0.1)),
+		textures{
+			Texture("textures/shop/front.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/shop/back.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/shop/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/shop/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/shop/roof.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/shop/floor.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	}
+	{
+	}
+
+	void Sklep::Draw()
+	{
+		m_VAO.Bind();
+
+		for (int i = 0; i < textures.size(); ++i) {
+			textures[i].Bind();
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(GLuint)));
+			textures[i].Unbind();
+		}
+
+		m_VAO.Unbind();
+	}
+
+	Blok::Blok(const glm::fvec3& pos, Shader& shader) : Cube(pos,glm::fvec3(0.1,0.15,0.1)),
+		textures{
+			Texture("textures/flat/front.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/flat/back.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/flat/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/flat/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/flat/roof.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			Texture("textures/flat/floor.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	}
+	{
+	}
+
+	void Blok::Draw()
+	{
+		m_VAO.Bind();
+
+		for (int i = 0; i < textures.size(); ++i) {
+			textures[i].Bind();
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(GLuint)));
+			textures[i].Unbind();
+		}
+
+		m_VAO.Unbind();
+	}
 
 }

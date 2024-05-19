@@ -93,6 +93,7 @@ namespace eng
 	{
 	public:
 		Cube(const glm::fvec3& pos);
+		Cube(const glm::fvec3& pos, const glm::fvec3& size);
 
 		void Move(const glm::fvec3& offset);
 	};
@@ -107,9 +108,21 @@ namespace eng
 		std::array<Texture, 6> textures;
 	};
 
-	class Szkola : public Cube {};
+	class Sklep : public Cube {
+	public:
+		Sklep(const glm::fvec3& pos, Shader& shader);
+		void Draw() override;
+	private:
+		std::array<Texture, 6> textures;
+	};
 
-	class Szpital : public Cube {};
+	class Blok : public Cube {
+	public:
+		Blok(const glm::fvec3& pos, Shader& shader);
+		void Draw() override;
+	private:
+		std::array<Texture, 6> textures;
+	};
 
 	//i t.d. 
 }

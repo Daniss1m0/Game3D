@@ -72,10 +72,36 @@ namespace eng
 		glm::fvec3 pos(0.7f, 0.0f, 0.3f);
 		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
 		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
+
+		glm::fvec3 posSklep(-0.5f, 0.05f, -0.5f);
+		glm::fvec3 posSklep1(-0.35f, 0.05f, -0.5f);
+		glm::fvec3 posSklep2(-0.20f, 0.05f, -0.5f);
+		glm::fvec3 posSklep3(-0.05f, 0.05f, -0.5f);
+		glm::fvec3 posSklep4(0.1f, 0.05f, -0.5f);
+
+		glm::fvec3 posBlok(-0.5f, 0.075f, -0.2f);
+		glm::fvec3 posBlok1(-0.35f, 0.075f, -0.2f);
+		glm::fvec3 posBlok2(-0.20f, 0.075f, -0.2f);
+		glm::fvec3 posBlok3(-0.05f, 0.075f, -0.2f);
+		glm::fvec3 posBlok4(0.1f, 0.075f, -0.2f);
+
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 
 		Budynek bud1(pos2, shaderProgram);
+
+		Sklep sklep1(posSklep, shaderProgram);
+		Sklep sklep2(posSklep1, shaderProgram);
+		Sklep sklep3(posSklep2, shaderProgram);
+		Sklep sklep4(posSklep3, shaderProgram);
+		Sklep sklep5(posSklep4, shaderProgram);
+
+		Blok blok1(posBlok, shaderProgram);
+		Blok blok2(posBlok1, shaderProgram);
+		Blok blok3(posBlok2, shaderProgram);
+		Blok blok4(posBlok3, shaderProgram);
+		Blok blok5(posBlok4, shaderProgram);
+
 		//bud1.Move(glm::vec3(0.3f, 0.0f, 0.3f));
 		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 		//Triangle triangle2(positions);
@@ -134,6 +160,19 @@ namespace eng
 			//TODO: Optymalizowac wywoływanie obiektów.
 
 			bud1.Draw();
+			
+			sklep1.Draw();
+			sklep2.Draw();
+			sklep3.Draw();
+			sklep4.Draw();
+			sklep5.Draw();
+
+			blok1.Draw();
+			blok2.Draw();
+			blok3.Draw();
+			blok4.Draw();
+			blok5.Draw();
+
 			map.Draw();
 			piramid.Draw();
 
