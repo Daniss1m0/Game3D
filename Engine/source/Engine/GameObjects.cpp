@@ -376,7 +376,7 @@ namespace eng
 	Cube::Cube(const glm::fvec3& pos, const glm::fvec3& size)
 	{
 		GLfloat verticesCube[] =
-		{ //				COORDINATES			   	  /		  COLORS        /    TexCoord      /       NORMALS        //
+		{ //					COORDINATES					   	  /		  COLORS        /    TexCoord      /       NORMALS        //
 			// Front face
 			pos.x - size.x/2, pos.y - size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 0.0f,        0.0f, 1.0f, 0.0f,
 			pos.x - size.x/2, pos.y + size.y/2, pos.z + size.z/2,    1.0f, 1.0f, 1.0f,       0.0f, 1.0f,        0.0f, 1.0f, 0.0f,
@@ -456,7 +456,7 @@ namespace eng
 		m_VBO.Unbind();
 	}
 
-	Budynek::Budynek(const glm::fvec3& pos, Shader& shader) : Cube(pos),
+	Budynek::Budynek(const glm::fvec3& pos) : Cube(pos),
 		textures{
 			Texture("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
@@ -472,7 +472,8 @@ namespace eng
 	{
 		m_VAO.Bind();
 
-		for (int i = 0; i < textures.size(); ++i) {
+		for (int i = 0; i < textures.size(); ++i) 
+		{
 			textures[i].Bind();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(GLuint)));
 			textures[i].Unbind();
@@ -481,7 +482,7 @@ namespace eng
 		m_VAO.Unbind();
 	}
 
-	Sklep::Sklep(const glm::fvec3& pos, Shader& shader) : Cube(pos,glm::fvec3(0.1, 0.1, 0.1)),
+	Sklep::Sklep(const glm::fvec3& pos) : Cube(pos,glm::fvec3(0.1, 0.1, 0.1)),
 		textures{
 			Texture("textures/shop/front.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/shop/back.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
@@ -489,7 +490,7 @@ namespace eng
 			Texture("textures/shop/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/shop/roof.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/shop/floor.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	}
+		}
 	{
 	}
 
@@ -497,7 +498,8 @@ namespace eng
 	{
 		m_VAO.Bind();
 
-		for (int i = 0; i < textures.size(); ++i) {
+		for (int i = 0; i < textures.size(); ++i) 
+		{
 			textures[i].Bind();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(GLuint)));
 			textures[i].Unbind();
@@ -506,7 +508,7 @@ namespace eng
 		m_VAO.Unbind();
 	}
 
-	Blok::Blok(const glm::fvec3& pos, Shader& shader) : Cube(pos,glm::fvec3(0.1,0.15,0.1)),
+	Blok::Blok(const glm::fvec3& pos) : Cube(pos,glm::fvec3(0.1,0.15,0.1)),
 		textures{
 			Texture("textures/flat/front.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/flat/back.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
@@ -514,7 +516,7 @@ namespace eng
 			Texture("textures/flat/side.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/flat/roof.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/flat/floor.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	}
+		}
 	{
 	}
 
@@ -522,7 +524,8 @@ namespace eng
 	{
 		m_VAO.Bind();
 
-		for (int i = 0; i < textures.size(); ++i) {
+		for (int i = 0; i < textures.size(); ++i) 
+		{
 			textures[i].Bind();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(GLuint)));
 			textures[i].Unbind();
@@ -530,5 +533,6 @@ namespace eng
 
 		m_VAO.Unbind();
 	}
+
 
 }

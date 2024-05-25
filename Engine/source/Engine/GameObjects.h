@@ -100,7 +100,7 @@ namespace eng
 
 	class Budynek : public Cube {
 	public:
-		Budynek(const glm::fvec3& pos, Shader& shader);
+		Budynek(const glm::fvec3& pos);
 
 		void Draw() override;
 
@@ -110,7 +110,7 @@ namespace eng
 
 	class Sklep : public Cube {
 	public:
-		Sklep(const glm::fvec3& pos, Shader& shader);
+		Sklep(const glm::fvec3& pos);
 		void Draw() override;
 	private:
 		std::array<Texture, 6> textures;
@@ -118,7 +118,7 @@ namespace eng
 
 	class Blok : public Cube {
 	public:
-		Blok(const glm::fvec3& pos, Shader& shader);
+		Blok(const glm::fvec3& pos);
 		void Draw() override;
 	private:
 		std::array<Texture, 6> textures;

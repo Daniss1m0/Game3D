@@ -88,19 +88,19 @@ namespace eng
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 
-		Budynek bud1(pos2, shaderProgram);
+		Budynek bud1(pos2);
 
-		Sklep sklep1(posSklep, shaderProgram);
-		Sklep sklep2(posSklep1, shaderProgram);
-		Sklep sklep3(posSklep2, shaderProgram);
-		Sklep sklep4(posSklep3, shaderProgram);
-		Sklep sklep5(posSklep4, shaderProgram);
+		Sklep sklep1(posSklep);
+		Sklep sklep2(posSklep1);
+		Sklep sklep3(posSklep2);
+		Sklep sklep4(posSklep3);
+		Sklep sklep5(posSklep4);
 
-		Blok blok1(posBlok, shaderProgram);
-		Blok blok2(posBlok1, shaderProgram);
-		Blok blok3(posBlok2, shaderProgram);
-		Blok blok4(posBlok3, shaderProgram);
-		Blok blok5(posBlok4, shaderProgram);
+		Blok blok1(posBlok);
+		Blok blok2(posBlok1);
+		Blok blok3(posBlok2);
+		Blok blok4(posBlok3);
+		Blok blok5(posBlok4);
 
 		//bud1.Move(glm::vec3(0.3f, 0.0f, 0.3f));
 		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
@@ -123,6 +123,14 @@ namespace eng
 		float a = 0.01f;
 		float b = 0.01f;
 
+		// Initialize ImGUI
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(m_Window.GetWindow(), true);
+		ImGui_ImplOpenGL3_Init("#version 330");
+
 		while (!m_Window.ShouldClose())
 		{
 			// ---------------------------------------------
@@ -139,10 +147,15 @@ namespace eng
 			glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 			glUniform3f(glGetUniformLocation(lightShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+
 			// ---------------------------------------------
 			//		Rysowanie
 			// ---------------------------------------------
 			renderer->Clear(ENG_CLEAR_COLOR * 1.0f);
+
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
 
 			m_Camera.Inputs(m_Window.GetWindow());
 			m_Camera.updateMatrix(45.0f, 0.1f, 100.0f);
@@ -157,7 +170,7 @@ namespace eng
 
 			m_Camera.Matrix(shaderProgram, "camMatrix");
 
-			//TODO: Optymalizowac wywoływanie obiektów.
+			//TODO: Optymalizowac wywoływanie obiektów (UpdatableObject).
 
 			bud1.Draw();
 			
@@ -176,6 +189,21 @@ namespace eng
 			map.Draw();
 			piramid.Draw();
 
+			ImGui::Begin("My name is window, ImGUI window");
+			// Text that appears in the window
+			ImGui::Text("Hello there adventurer!");
+			// Checkbox that appears in the window
+			//ImGui::Checkbox("Draw Triangle", &drawTriangle);
+			// Slider that appears in the window
+			//ImGui::SliderFloat("Size", &size, 0.5f, 2.0f);
+			// Fancy color editor that appears in the window
+			//ImGui::ColorEdit4("Color", color);
+			// Ends the window
+			ImGui::End();
+
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 			lightShader.Activate();
 
 			m_Camera.Matrix(lightShader, "camMatrix");
@@ -184,6 +212,11 @@ namespace eng
 
 			m_Window.SwapBuffers();
 		}
+
+		// Deletes all ImGUI instances
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 	/*
 	void Engine::SetFPS(std::uint32_t fps)
