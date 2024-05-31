@@ -5,7 +5,6 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include<filesystem>
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -36,5 +35,7 @@ namespace eng
 	private:
 		Window m_Window;
 		Camera m_Camera;
+
+		int balance = 100; // for game
 	};
 }

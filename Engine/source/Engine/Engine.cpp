@@ -61,13 +61,16 @@ namespace eng
 		//		Tworzenie obiektów gry 
 		// ---------------------------------------------
 
+		std::vector<BaseObject*> UpdatableVector;
+
 		glm::mat4x3 positions;
 		positions[0] = glm::vec3(-1.0f, 0.0f, 1.0f);
 		positions[1] = glm::vec3(-1.0f, 0.0f, -1.0f);
 		positions[2] = glm::vec3(1.0f, 0.0f, -1.0f);
 		positions[3] = glm::vec3(1.0f, 0.0f, 1.0f);
 
-		Map map(positions, shaderProgram);
+		Map* map = new Map(positions, shaderProgram);
+		UpdatableVector.push_back(map);
 
 		glm::fvec3 pos(0.7f, 0.0f, 0.3f);
 		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
@@ -88,19 +91,11 @@ namespace eng
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
 
-		Budynek bud1(pos2);
+		//Budynek bud1(pos2);
 
-		Sklep sklep1(posSklep);
-		Sklep sklep2(posSklep1);
-		Sklep sklep3(posSklep2);
-		Sklep sklep4(posSklep3);
-		Sklep sklep5(posSklep4);
+		//Sklep sklep1(posSklep);
 
-		Blok blok1(posBlok);
-		Blok blok2(posBlok1);
-		Blok blok3(posBlok2);
-		Blok blok4(posBlok3);
-		Blok blok5(posBlok4);
+		//Blok blok1(posBlok);
 
 		//bud1.Move(glm::vec3(0.3f, 0.0f, 0.3f));
 		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
@@ -108,7 +103,7 @@ namespace eng
 		//glm::fvec3 offset(1.0f, 0.0f, 0.0f);
 		//triangle2.Move(offset);
 
-		Piramid piramid(pos);
+		//Piramid piramid(pos);
 		//piramid.Move(offset);
 
 		Sun sun(posSun);
@@ -131,22 +126,51 @@ namespace eng
 		ImGui_ImplGlfw_InitForOpenGL(m_Window.GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 
+		bool buySklep = false;
+		bool buyBudynek = false;
+		bool buyBlok = false;
+		glm::vec3 newHousePosition(0.0f, 0.05f, 0.0f);
+
 		while (!m_Window.ShouldClose())
 		{
 			// ---------------------------------------------
 			//		Logika
 			// ---------------------------------------------
 			m_Window.HandleEvents();
+
 			glm::vec3 newPos = glm::vec3(-cos(sunRotationAngle) * sunCircleRadius, -sin(sunRotationAngle) * sunCircleRadius, 0.0f);
 			//glm::vec3 newPos = glm::vec3(a * cos(sunRotationAngle), b * sin(sunRotationAngle), 0.000f);
 			sun.Move(newPos);
 			sunRotationAngle += sunRotationSpeed;
 			lightPos += newPos;
 			lightModel = glm::translate(lightModel, newPos);
-			//lightModel = glm::translate(glm::mat4(1.0f), lightPos);
 			glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 			glUniform3f(glGetUniformLocation(lightShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+			if (buySklep && balance >= 100)
+			{
+				Sklep* newSklep = new Sklep(newHousePosition);
+				UpdatableVector.push_back(newSklep);
+				newHousePosition.x += 0.2f;
+				balance -= 100;
+				buySklep = false;
+			}
+			if (buyBudynek && balance >= 200)
+			{
+				Budynek* newBudynek = new Budynek(newHousePosition);
+				UpdatableVector.push_back(newBudynek);
+				newHousePosition.x += 0.2f;
+				balance -= 200;
+				buyBudynek = false;
+			}
+			if (buyBlok && balance >= 300)
+			{
+				Blok* newBlok = new Blok(newHousePosition);
+				UpdatableVector.push_back(newBlok);
+				newHousePosition.x += 0.2f;
+				balance -= 300;
+				buyBlok = false;
+			}
 
 			// ---------------------------------------------
 			//		Rysowanie
@@ -157,10 +181,14 @@ namespace eng
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			m_Camera.Inputs(m_Window.GetWindow());
+			if (!ImGui::IsAnyItemActive() && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
+				m_Camera.Inputs(m_Window.GetWindow());
+			}
+
 			m_Camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
 			shaderProgram.Activate();
+			m_Camera.Matrix(shaderProgram, "camMatrix");
 
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
 			glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -168,26 +196,10 @@ namespace eng
 
 			glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), m_Camera.Position.x, m_Camera.Position.y, m_Camera.Position.z);
 
-			m_Camera.Matrix(shaderProgram, "camMatrix");
+			//Wywoływanie obiektów.
+			for (const auto& object : UpdatableVector)
+				object->Draw();
 
-			//TODO: Optymalizowac wywoływanie obiektów (UpdatableObject).
-
-			bud1.Draw();
-			
-			sklep1.Draw();
-			sklep2.Draw();
-			sklep3.Draw();
-			sklep4.Draw();
-			sklep5.Draw();
-
-			blok1.Draw();
-			blok2.Draw();
-			blok3.Draw();
-			blok4.Draw();
-			blok5.Draw();
-
-			map.Draw();
-			piramid.Draw();
 
 			ImGui::Begin("My name is window, ImGUI window");
 			// Text that appears in the window
@@ -201,16 +213,54 @@ namespace eng
 			// Ends the window
 			ImGui::End();
 
+			ImGui::Begin("Shop");
+			ImGui::Text("Purchase your buildings here!");
+			ImGui::Separator();
+
+			ImGui::Text("Available Buildings:");
+			ImGui::Spacing();
+
+			if (ImGui::Button("Buy Sklep"))
+				buySklep = true;
+
+			ImGui::SameLine();
+			ImGui::Text("Price: 100");
+			ImGui::Spacing();
+
+			if (ImGui::Button("Buy Budynek"))
+				buyBudynek = true;
+
+			ImGui::SameLine();
+			ImGui::Text("Price: 200");
+			ImGui::Spacing();
+
+			if (ImGui::Button("Buy Blok"))
+				buyBlok = true;
+
+			ImGui::SameLine();
+			ImGui::Text("Price: 300");
+			ImGui::Spacing();
+
+			ImGui::Separator();
+			ImGui::Text("Your balance: %d", balance);
+			ImGui::Text("The number of your buildings: %d", UpdatableVector.size() - 1);
+
+			ImGui::End();
+
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 			lightShader.Activate();
-
 			m_Camera.Matrix(lightShader, "camMatrix");
-
+			
+			//Wywoływanie obiektów drugiego shadera
 			sun.Draw();
 
 			m_Window.SwapBuffers();
+		}
+
+		for (auto object : UpdatableVector) {
+			delete object;
 		}
 
 		// Deletes all ImGUI instances

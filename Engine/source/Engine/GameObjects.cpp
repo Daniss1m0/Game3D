@@ -456,7 +456,7 @@ namespace eng
 		m_VBO.Unbind();
 	}
 
-	Budynek::Budynek(const glm::fvec3& pos) : Cube(pos),
+	Budynek::Budynek(const glm::fvec3& pos) : Cube(pos, glm::fvec3(0.1, 0.1, 0.1)),
 		textures{
 			Texture("textures/planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
 			Texture("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),

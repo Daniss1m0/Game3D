@@ -75,7 +75,7 @@ namespace eng
 		Texture brick;
 	};
 
-	class Sun : public BaseObject
+	class Sun
 	{
 	public:
 		Sun(const glm::fvec3& pos);
