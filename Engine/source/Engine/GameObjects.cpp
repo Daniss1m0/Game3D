@@ -139,17 +139,15 @@ namespace eng
 
 		m_VBO.Unbind();
 	}
-	
-	Map::Map(const glm::mat4x3& positions, Shader& shader)
-		: planksTex("textures/grs.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
-		  planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
+
+	Rectangle::Rectangle(const glm::mat4x3& positions)
 	{
 		GLfloat verticesMAP[] =
 		{ //					COORDINATES						/        COLORS        /    TexCoord    /       NORMALS     //
-			positions[0][0], positions[0][1], positions[0][2],		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
-			positions[1][0], positions[1][1], positions[1][2],		0.0f, 0.0f, 0.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-			positions[2][0], positions[2][1], positions[2][2],		0.0f, 0.0f, 0.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-			positions[3][0], positions[3][1], positions[3][2],		0.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+			positions[0][0], positions[0][1], positions[0][2],		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
+			positions[1][0], positions[1][1], positions[1][2],		1.0f, 1.0f, 1.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			positions[2][0], positions[2][1], positions[2][2],		1.0f, 1.0f, 1.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
+			positions[3][0], positions[3][1], positions[3][2],		1.0f, 1.0f, 1.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
 		};
 
 		GLuint indicesMAP[] =
@@ -159,7 +157,34 @@ namespace eng
 		};
 
 		Render(verticesMAP, sizeof(verticesMAP), indicesMAP, sizeof(indicesMAP));
+	}
 
+	void Rectangle::Move(const glm::fvec3& offset)
+	{
+		m_VBO.Bind();
+
+		GLfloat* vertices = static_cast<GLfloat*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		if (vertices != nullptr)
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				int startIndex = i * 11;
+
+				vertices[startIndex] += offset.x;
+				vertices[startIndex + 1] += offset.y;
+				vertices[startIndex + 2] += offset.z;
+			}
+
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+		}
+
+		m_VBO.Unbind();
+	}
+	
+	Map::Map(const glm::mat4x3& positions, Shader& shader) : Rectangle(positions),
+		planksTex("textures/grs.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE),
+		planksSpec("textures/planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE)
+	{
 		planksTex.texUnit(shader, "tex0", 0);
 		planksSpec.texUnit(shader, "tex1", 1);
 	}
@@ -177,16 +202,32 @@ namespace eng
 		planksSpec.Unbind();
 	}
 
+	Cell::Cell(const glm::mat4x3& pos, const char* image) : Rectangle(pos),
+		tex(image, GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	{
+	}
+
+	void Cell::Draw()
+	{
+		tex.Bind();
+
+		m_VAO.Bind();
+		glDrawElements(GL_TRIANGLES, m_EBO.GetCount(), GL_UNSIGNED_INT, 0);
+		m_VAO.Unbind();
+
+		tex.Unbind();
+	}
+
 	Piramid::Piramid(const glm::fvec3& pos)
 		: brick("textures/brick.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	{
 		GLfloat verticesPIRAMID[] =
 		{ //				 COORDINATES					/        COLORS      /   TexCoord     /       NORMALS     //
-			pos.x - 0.25f, pos.y + 0.0f, pos.z + 0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			pos.x - 0.25f, pos.y + 0.0f, pos.z - 0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			pos.x + 0.25f, pos.y + 0.0f, pos.z - 0.25f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			pos.x + 0.25f, pos.y + 0.0f, pos.z + 0.25f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-			pos.x + 0.00f, pos.y + 0.4f, pos.z + 0.00f,     0.92f, 0.86f, 0.76f,   2.5f, 5.0f,   0.0f, 1.0f, 0.0f
+			pos.x - 0.1f, pos.y - 0.05f, pos.z + 0.1f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x - 0.1f, pos.y - 0.05f, pos.z - 0.1f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.1f, pos.y - 0.05f, pos.z - 0.1f,     0.83f, 0.70f, 0.44f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.1f, pos.y - 0.05f, pos.z + 0.1f,     0.83f, 0.70f, 0.44f,   5.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+			pos.x + 0.00f, pos.y + 0.1f, pos.z + 0.00f,     0.92f, 0.86f, 0.76f,   2.5f, 5.0f,   0.0f, 1.0f, 0.0f
 		};
 
 		GLuint indicesPIRAMID[] =

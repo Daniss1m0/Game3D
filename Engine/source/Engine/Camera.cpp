@@ -27,6 +27,7 @@ namespace eng
 
 	void Camera::Inputs(GLFWwindow* window)
 	{
+		
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			Position += speed * Orientation;
@@ -43,6 +44,7 @@ namespace eng
 		{
 			Position += speed * glm::normalize(glm::cross(Orientation, Up));
 		}
+		
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			Position += speed * Up;

@@ -51,7 +51,15 @@ namespace eng
 		void Move(const glm::fvec3& offset);
 	};
 
-	class Map : public BaseObject
+	class Rectangle : public BaseObject
+	{
+	public:
+		Rectangle(const glm::mat4x3& pos);
+
+		void Move(const glm::fvec3& offset);
+	};
+
+	class Map : public Rectangle
 	{
 	public:
 		Map(const glm::mat4x3& pos, Shader& shader);
@@ -61,6 +69,17 @@ namespace eng
 	private:
 		Texture planksTex;
 		Texture planksSpec;
+	};
+
+	class Cell : public Rectangle
+	{
+	public:
+		Cell(const glm::mat4x3& pos, const char* image);
+
+		void Draw() override;
+
+	private:
+		Texture tex;
 	};
 
 	class Piramid : public BaseObject

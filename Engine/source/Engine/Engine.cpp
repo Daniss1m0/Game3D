@@ -3,7 +3,7 @@
 namespace eng
 {
 	Engine::Engine(std::uint32_t width, std::uint32_t height, const std::string& title)
-		: m_Camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f))
+		: m_Camera(width, height, glm::vec3(0.0f, 1.0f, 2.0f))
 	{
 		if (!glfwInit())
 			std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -77,45 +77,43 @@ namespace eng
 		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
 		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
 
-		//Cube cube(pos);
-		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
+		glm::mat4x3 positionsR;
+		positionsR[0] = glm::vec3(-1.0f, 0.3f, -0.8f);
+		positionsR[1] = glm::vec3(-1.0f, 0.3f, -1.0f);
+		positionsR[2] = glm::vec3(-0.8f, 0.3f, -1.0f);
+		positionsR[3] = glm::vec3(-0.8f, 0.3f, -0.8f);
 
-		//Budynek bud1(pos2);
-
-		//Sklep sklep1(posSklep);
-
-		//Blok blok1(posBlok);
-
-		//bud1.Move(glm::vec3(0.3f, 0.0f, 0.3f));
-		//bud1.Move(glm::vec3(0.5f, 0.0f, 0.5f));
-		//Triangle triangle2(positions);
-		//glm::fvec3 offset(1.0f, 0.0f, 0.0f);
-		//triangle2.Move(offset);
-
-		//Piramid piramid(pos);
-		//piramid.Move(offset);
+		Cell cell1(positionsR, "textures/red.png");
+		Cell cell2(positionsR, "textures/green.png");
 
 		Sun sun(posSun);
-
-		//sun.Move(offset);
 
 		Renderer* renderer = Renderer::Get();
 
 		float sunRotationAngle = 0.0f;
 		float sunRotationSpeed = 0.01f;
 		float sunCircleRadius = 0.01f;
-		int daysPassed = 0;
 
-		bool buySklep = false;
-		bool buyBudynek = false;
-		bool buyBlok = false;
-		bool buyPiramid = false;
-		glm::vec3 newSklepPosition(-0.9f, 0.05f, -0.9f);
+		int daysPassed = 0;
+		bool isHoveredShop = false;
 
 		int shopIncome = 0;
 		int buildingIncome = 0;
 		int blockIncome = 0;
 		int pyramidIncome = 0;
+
+		bool buySklep = false;
+		bool buyBudynek = false;
+		bool buyBlok = false;
+		bool buyPiramid = false;
+	
+		bool upKeyPressed = false;
+		bool downKeyPressed = false;
+		bool leftKeyPressed = false;
+		bool rightKeyPressed = false;
+
+		bool grid[10][10] = { false };
+		glm::vec3 gridPosition(-0.9f, 0.05f, -0.9f);
 
 		// Initialize ImGUI
 		IMGUI_CHECKVERSION();
@@ -124,6 +122,8 @@ namespace eng
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(m_Window.GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+
+		//Grid grid(1.0f, 10);
 
 		while (!m_Window.ShouldClose())
 		{
@@ -141,6 +141,52 @@ namespace eng
 			glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 			glUniform3f(glGetUniformLocation(lightShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_UP) == GLFW_PRESS)
+			{
+				if (!upKeyPressed)
+				{
+					gridPosition.z += 0.2f;
+					cell1.Move(glm::vec3(0.0f, 0.0f, 0.2f));
+					upKeyPressed = true;
+				}
+			}
+			else
+				upKeyPressed = false;
+			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
+			{
+				if (!downKeyPressed)
+				{
+					gridPosition.z -= 0.2f;
+					cell1.Move(glm::vec3(0.0f, 0.0f, -0.2f));
+					downKeyPressed = true;
+				}
+			}
+			else
+				downKeyPressed = false;
+			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
+			{
+				if (!leftKeyPressed)
+				{
+					gridPosition.x -= 0.2f;
+					cell1.Move(glm::vec3(-0.2f, 0.0f, 0.0f));
+					leftKeyPressed = true;
+				}
+			}
+			else
+				leftKeyPressed = false;
+			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
+			{
+				if (!rightKeyPressed)
+				{
+					gridPosition.x += 0.2f;
+					cell1.Move(glm::vec3(0.2f, 0.0f, 0.0f));
+					rightKeyPressed = true;
+				}
+			}
+			else
+				rightKeyPressed = false;
+
+
 			if (sunRotationAngle >= 2 * 3.14159) 
 			{
 				sunRotationAngle = 0.0f;
@@ -148,41 +194,111 @@ namespace eng
 				balance += shopIncome + buildingIncome + blockIncome + pyramidIncome;
 			}
 
+			int gridX = static_cast<int>((gridPosition.x + 1.0f) / 0.2f);
+			int gridZ = static_cast<int>((gridPosition.z + 1.0f) / 0.2f);
+
 			if (buySklep && balance >= 100)
 			{
-				Sklep* newSklep = new Sklep(newSklepPosition);
-				UpdatableVector.push_back(newSklep);
-				newSklepPosition.x += 0.2f;
-				balance -= 100;
-				buySklep = false;
-				shopIncome += 10;
+				if (gridPosition.x >= -1.0f && gridPosition.x <= 1.0f && gridPosition.z >= -1.0f && gridPosition.z <= 1.0f)
+				{
+					if (!grid[gridX][gridZ])
+					{
+						Sklep* newSklep = new Sklep(gridPosition);
+						UpdatableVector.push_back(newSklep);
+						balance -= 100;
+						buySklep = false;
+						shopIncome += 10;
+						grid[gridX][gridZ] = true;
+					}
+					else
+					{
+						std::cout << "Cannot build!" << std::endl;
+						buySklep = false;
+					}
+				}
+				else 
+				{
+					std::cout << "Cannot build outside the grid boundaries!" << std::endl;
+					buySklep = false;
+				}
 			}
+
 			if (buyBudynek && balance >= 200)
 			{
-				Budynek* newBudynek = new Budynek(newSklepPosition);
-				UpdatableVector.push_back(newBudynek);
-				newSklepPosition.x += 0.2f;
-				balance -= 200;
-				buyBudynek = false;
-				buildingIncome += 20;
+				if (gridPosition.x >= -1.0f && gridPosition.x <= 1.0f && gridPosition.z >= -1.0f && gridPosition.z <= 1.0f)
+				{
+					if (!grid[gridX][gridZ])
+					{
+						Budynek* newBudynek = new Budynek(gridPosition);
+						UpdatableVector.push_back(newBudynek);
+						balance -= 200;
+						buyBudynek = false;
+						buildingIncome += 20;
+						grid[gridX][gridZ] = true;
+					}
+					else
+					{
+						std::cout << "Cannot build!" << std::endl;
+						buyBudynek = false;
+					}
+				}
+				else
+				{
+					std::cout << "Cannot build outside the grid boundaries!" << std::endl;
+					buyBudynek = false;
+				}
 			}
+
 			if (buyBlok && balance >= 500)
 			{
-				Blok* newBlok = new Blok(newSklepPosition);
-				UpdatableVector.push_back(newBlok);
-				newSklepPosition.x += 0.2f;
-				balance -= 500;
-				buyBlok = false;
-				blockIncome += 50;
+				if (gridPosition.x >= -1.0f && gridPosition.x <= 1.0f && gridPosition.z >= -1.0f && gridPosition.z <= 1.0f)
+				{
+					if (!grid[gridX][gridZ])
+					{
+						Blok* newBlok = new Blok(gridPosition);
+						UpdatableVector.push_back(newBlok);
+						balance -= 500;
+						buyBlok = false;
+						blockIncome += 50;
+						grid[gridX][gridZ] = true;
+					}
+					else
+					{
+						std::cout << "Cannot build!" << std::endl;
+						buyBlok = false;
+					}
+				}
+				else
+				{
+					std::cout << "Cannot build outside the grid boundaries!" << std::endl;
+					buyBlok = false;
+				}
 			}
+
 			if (buyPiramid && balance >= 1000)
 			{
-				Piramid* newPiramid = new Piramid(newSklepPosition);
-				UpdatableVector.push_back(newPiramid);
-				newSklepPosition.x += 0.2f;
-				balance -= 1000;
-				buyPiramid = false;
-				pyramidIncome += 100;
+				if (gridPosition.x >= -1.0f && gridPosition.x <= 1.0f && gridPosition.z >= -1.0f && gridPosition.z <= 1.0f)
+				{
+					if (!grid[gridX][gridZ])
+					{
+						Piramid* newPiramid = new Piramid(gridPosition);
+						UpdatableVector.push_back(newPiramid);
+						balance -= 1000;
+						buyPiramid = false;
+						pyramidIncome += 100;
+						grid[gridX][gridZ] = true;
+					}
+					else
+					{
+						std::cout << "Cannot build!" << std::endl;
+						buyPiramid = false;
+					}
+				}
+				else
+				{
+					std::cout << "Cannot build outside the grid boundaries!" << std::endl;
+					buyPiramid = false;
+				}
 			}
 
 			// ---------------------------------------------
@@ -209,9 +325,13 @@ namespace eng
 
 			glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), m_Camera.Position.x, m_Camera.Position.y, m_Camera.Position.z);
 
-			//Wywoływanie obiektów.
+			//Wywoływanie obiektów poprzez UpdatableVector.
 			for (const auto& object : UpdatableVector)
 				object->Draw();
+
+			if (isHoveredShop)
+				cell1.Draw();
+
 
 			ImGui::Begin("Statistics");
 			ImGui::Text("Your balance: %d", balance);
@@ -247,6 +367,8 @@ namespace eng
 			ImGui::Begin("Shop");
 			ImGui::Text("Purchase your buildings here!");
 			ImGui::Separator();
+
+			isHoveredShop = ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
 
 			ImGui::Text("Available Buildings:");
 			ImGui::Spacing();
