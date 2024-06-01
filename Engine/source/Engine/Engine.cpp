@@ -62,6 +62,7 @@ namespace eng
 		// ---------------------------------------------
 
 		std::vector<BaseObject*> UpdatableVector;
+		
 
 		glm::mat4x3 positions;
 		positions[0] = glm::vec3(-1.0f, 0.0f, 1.0f);
@@ -75,18 +76,6 @@ namespace eng
 		glm::fvec3 pos(0.7f, 0.0f, 0.3f);
 		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
 		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
-
-		glm::fvec3 posSklep(-0.5f, 0.05f, -0.5f);
-		glm::fvec3 posSklep1(-0.35f, 0.05f, -0.5f);
-		glm::fvec3 posSklep2(-0.20f, 0.05f, -0.5f);
-		glm::fvec3 posSklep3(-0.05f, 0.05f, -0.5f);
-		glm::fvec3 posSklep4(0.1f, 0.05f, -0.5f);
-
-		glm::fvec3 posBlok(-0.5f, 0.075f, -0.2f);
-		glm::fvec3 posBlok1(-0.35f, 0.075f, -0.2f);
-		glm::fvec3 posBlok2(-0.20f, 0.075f, -0.2f);
-		glm::fvec3 posBlok3(-0.05f, 0.075f, -0.2f);
-		glm::fvec3 posBlok4(0.1f, 0.075f, -0.2f);
 
 		//Cube cube(pos);
 		//cube.Move(glm::vec3(0.5f, 0.0f, 0.5f));
@@ -115,8 +104,18 @@ namespace eng
 		float sunRotationAngle = 0.0f;
 		float sunRotationSpeed = 0.01f;
 		float sunCircleRadius = 0.01f;
-		float a = 0.01f;
-		float b = 0.01f;
+		int daysPassed = 0;
+
+		bool buySklep = false;
+		bool buyBudynek = false;
+		bool buyBlok = false;
+		bool buyPiramid = false;
+		glm::vec3 newSklepPosition(-0.9f, 0.05f, -0.9f);
+
+		int shopIncome = 0;
+		int buildingIncome = 0;
+		int blockIncome = 0;
+		int pyramidIncome = 0;
 
 		// Initialize ImGUI
 		IMGUI_CHECKVERSION();
@@ -125,11 +124,6 @@ namespace eng
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(m_Window.GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-
-		bool buySklep = false;
-		bool buyBudynek = false;
-		bool buyBlok = false;
-		glm::vec3 newHousePosition(0.0f, 0.05f, 0.0f);
 
 		while (!m_Window.ShouldClose())
 		{
@@ -147,29 +141,48 @@ namespace eng
 			glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 			glUniform3f(glGetUniformLocation(lightShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
+			if (sunRotationAngle >= 2 * 3.14159) 
+			{
+				sunRotationAngle = 0.0f;
+				daysPassed++;
+				balance += shopIncome + buildingIncome + blockIncome + pyramidIncome;
+			}
+
 			if (buySklep && balance >= 100)
 			{
-				Sklep* newSklep = new Sklep(newHousePosition);
+				Sklep* newSklep = new Sklep(newSklepPosition);
 				UpdatableVector.push_back(newSklep);
-				newHousePosition.x += 0.2f;
+				newSklepPosition.x += 0.2f;
 				balance -= 100;
 				buySklep = false;
+				shopIncome += 10;
 			}
 			if (buyBudynek && balance >= 200)
 			{
-				Budynek* newBudynek = new Budynek(newHousePosition);
+				Budynek* newBudynek = new Budynek(newSklepPosition);
 				UpdatableVector.push_back(newBudynek);
-				newHousePosition.x += 0.2f;
+				newSklepPosition.x += 0.2f;
 				balance -= 200;
 				buyBudynek = false;
+				buildingIncome += 20;
 			}
-			if (buyBlok && balance >= 300)
+			if (buyBlok && balance >= 500)
 			{
-				Blok* newBlok = new Blok(newHousePosition);
+				Blok* newBlok = new Blok(newSklepPosition);
 				UpdatableVector.push_back(newBlok);
-				newHousePosition.x += 0.2f;
-				balance -= 300;
+				newSklepPosition.x += 0.2f;
+				balance -= 500;
 				buyBlok = false;
+				blockIncome += 50;
+			}
+			if (buyPiramid && balance >= 1000)
+			{
+				Piramid* newPiramid = new Piramid(newSklepPosition);
+				UpdatableVector.push_back(newPiramid);
+				newSklepPosition.x += 0.2f;
+				balance -= 1000;
+				buyPiramid = false;
+				pyramidIncome += 100;
 			}
 
 			// ---------------------------------------------
@@ -200,17 +213,35 @@ namespace eng
 			for (const auto& object : UpdatableVector)
 				object->Draw();
 
-
-			ImGui::Begin("My name is window, ImGUI window");
-			// Text that appears in the window
-			ImGui::Text("Hello there adventurer!");
-			// Checkbox that appears in the window
-			//ImGui::Checkbox("Draw Triangle", &drawTriangle);
-			// Slider that appears in the window
-			//ImGui::SliderFloat("Size", &size, 0.5f, 2.0f);
-			// Fancy color editor that appears in the window
-			//ImGui::ColorEdit4("Color", color);
-			// Ends the window
+			ImGui::Begin("Statistics");
+			ImGui::Text("Your balance: %d", balance);
+			ImGui::Text("Time speed:");
+			if (ImGui::Button("0.5x"))
+			{
+				sunRotationSpeed = 0.005f;
+				sunCircleRadius = 0.005f;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("1.0x"))
+			{
+				sunRotationSpeed = 0.01f;
+				sunCircleRadius = 0.01f;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("2.0x"))
+			{
+				sunRotationSpeed = 0.05f;
+				sunCircleRadius = 0.05f;
+			}
+			ImGui::Separator();
+			ImGui::Text("Days passed: %d", daysPassed);
+			ImGui::Text("Income from shops: %d", shopIncome);
+			ImGui::Text("Income from buildings: %d", buildingIncome);
+			ImGui::Text("Income from blocks: %d", blockIncome);
+			ImGui::Text("Income from pyramids: %d", pyramidIncome);
+			ImGui::Text("Income amount: %d", shopIncome + buildingIncome + blockIncome + pyramidIncome);
+			ImGui::Separator();
+			ImGui::Text("The number of your buildings: %d", UpdatableVector.size() - 1);
 			ImGui::End();
 
 			ImGui::Begin("Shop");
@@ -238,13 +269,15 @@ namespace eng
 				buyBlok = true;
 
 			ImGui::SameLine();
-			ImGui::Text("Price: 300");
+			ImGui::Text("Price: 500");
 			ImGui::Spacing();
 
-			ImGui::Separator();
-			ImGui::Text("Your balance: %d", balance);
-			ImGui::Text("The number of your buildings: %d", UpdatableVector.size() - 1);
+			if (ImGui::Button("Buy Piramid"))
+				buyPiramid = true;
 
+			ImGui::SameLine();
+			ImGui::Text("Price: 1000");
+			ImGui::Spacing();
 			ImGui::End();
 
 			ImGui::Render();
@@ -259,9 +292,8 @@ namespace eng
 			m_Window.SwapBuffers();
 		}
 
-		for (auto object : UpdatableVector) {
+		for (auto object : UpdatableVector)
 			delete object;
-		}
 
 		// Deletes all ImGUI instances
 		ImGui_ImplOpenGL3_Shutdown();

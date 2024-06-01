@@ -36,6 +36,6 @@ namespace eng
 		Window m_Window;
 		Camera m_Camera;
 
-		int balance = 100; // for game
+		int balance = 10000; //licznik pieniedzy
 	};
 }
