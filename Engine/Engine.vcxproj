@@ -162,7 +162,6 @@
     <ClCompile Include="source\Engine\Camera.cpp" />
     <ClCompile Include="source\Engine\Engine.cpp" />
     <ClCompile Include="source\Engine\GameObjects.cpp" />
-    <ClCompile Include="source\Engine\Grid.cpp" />
     <ClCompile Include="source\Engine\internal\buffers.cpp" />
     <ClCompile Include="source\Engine\internal\utility.cpp" />
     <ClCompile Include="source\Engine\main.cpp" />
@@ -187,7 +186,6 @@
     <ClInclude Include="source\Engine\Camera.h" />
     <ClInclude Include="source\Engine\Engine.h" />
     <ClInclude Include="source\Engine\GameObjects.h" />
-    <ClInclude Include="source\Engine\Grid.h" />
     <ClInclude Include="source\Engine\internal\buffers.h" />
     <ClInclude Include="source\Engine\internal\utility.h" />
     <ClInclude Include="source\Engine\Renderer.h" />

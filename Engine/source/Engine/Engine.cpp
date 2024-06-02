@@ -62,7 +62,6 @@ namespace eng
 		// ---------------------------------------------
 
 		std::vector<BaseObject*> UpdatableVector;
-		
 
 		glm::mat4x3 positions;
 		positions[0] = glm::vec3(-1.0f, 0.0f, 1.0f);
@@ -73,19 +72,16 @@ namespace eng
 		Map* map = new Map(positions, shaderProgram);
 		UpdatableVector.push_back(map);
 
-		glm::fvec3 pos(0.7f, 0.0f, 0.3f);
-		glm::fvec3 pos2(0.1f, 0.1f, 0.3f);
-		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
-
 		glm::mat4x3 positionsR;
-		positionsR[0] = glm::vec3(-1.0f, 0.3f, -0.8f);
-		positionsR[1] = glm::vec3(-1.0f, 0.3f, -1.0f);
-		positionsR[2] = glm::vec3(-0.8f, 0.3f, -1.0f);
-		positionsR[3] = glm::vec3(-0.8f, 0.3f, -0.8f);
+		positionsR[0] = glm::vec3(-1.0f, 0.2f, -0.8f);
+		positionsR[1] = glm::vec3(-1.0f, 0.2f, -1.0f);
+		positionsR[2] = glm::vec3(-0.8f, 0.2f, -1.0f);
+		positionsR[3] = glm::vec3(-0.8f, 0.2f, -0.8f);
 
 		Cell cell1(positionsR, "textures/red.png");
 		Cell cell2(positionsR, "textures/green.png");
-
+		
+		glm::fvec3 posSun(0.0f, 1.0f, 0.0f);
 		Sun sun(posSun);
 
 		Renderer* renderer = Renderer::Get();
@@ -115,15 +111,12 @@ namespace eng
 		bool grid[10][10] = { false };
 		glm::vec3 gridPosition(-0.9f, 0.05f, -0.9f);
 
-		// Initialize ImGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(m_Window.GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-
-		//Grid grid(1.0f, 10);
 
 		while (!m_Window.ShouldClose())
 		{
@@ -143,10 +136,10 @@ namespace eng
 
 			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_UP) == GLFW_PRESS)
 			{
-				if (!upKeyPressed)
+				if (!upKeyPressed && gridPosition.z - 0.2f >= -1.0f) //&& (gridPosition.x >= -1.0f && gridPosition.x <= 1.0f && gridPosition.z >= -1.0f && gridPosition.z <= 1.0f)
 				{
-					gridPosition.z += 0.2f;
-					cell1.Move(glm::vec3(0.0f, 0.0f, 0.2f));
+					gridPosition.z -= 0.2f;
+					cell1.Move(glm::vec3(0.0f, 0.0f, -0.2f));
 					upKeyPressed = true;
 				}
 			}
@@ -154,10 +147,10 @@ namespace eng
 				upKeyPressed = false;
 			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
 			{
-				if (!downKeyPressed)
+				if (!downKeyPressed && gridPosition.z + 0.2f <= 1.0f)
 				{
-					gridPosition.z -= 0.2f;
-					cell1.Move(glm::vec3(0.0f, 0.0f, -0.2f));
+					gridPosition.z += 0.2f;
+					cell1.Move(glm::vec3(0.0f, 0.0f, 0.2f));
 					downKeyPressed = true;
 				}
 			}
@@ -165,7 +158,7 @@ namespace eng
 				downKeyPressed = false;
 			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
 			{
-				if (!leftKeyPressed)
+				if (!leftKeyPressed && gridPosition.x - 0.2f >= -1.0f)
 				{
 					gridPosition.x -= 0.2f;
 					cell1.Move(glm::vec3(-0.2f, 0.0f, 0.0f));
@@ -176,7 +169,7 @@ namespace eng
 				leftKeyPressed = false;
 			if (glfwGetKey(m_Window.GetWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
 			{
-				if (!rightKeyPressed)
+				if (!rightKeyPressed && gridPosition.x + 0.2f <= 1.0f)
 				{
 					gridPosition.x += 0.2f;
 					cell1.Move(glm::vec3(0.2f, 0.0f, 0.0f));
@@ -329,9 +322,9 @@ namespace eng
 			for (const auto& object : UpdatableVector)
 				object->Draw();
 
+			//Bezposrednie wywoływanie obiektów.
 			if (isHoveredShop)
 				cell1.Draw();
-
 
 			ImGui::Begin("Statistics");
 			ImGui::Text("Your balance: %d", balance);
@@ -417,7 +410,6 @@ namespace eng
 		for (auto object : UpdatableVector)
 			delete object;
 
-		// Deletes all ImGUI instances
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();

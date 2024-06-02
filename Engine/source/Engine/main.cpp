@@ -1,6 +1,4 @@
-﻿// TODO: Doxygen. ImGUI.
-
-#include "engine.h"
+﻿#include "engine.h"
 #include "internal/utility.h"
 
 #define WINDOW_WIDTH 1360

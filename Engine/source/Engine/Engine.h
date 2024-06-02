@@ -18,7 +18,6 @@
 #include <Engine/Shader.h>
 #include <Engine/GameObjects.h>
 #include <Engine/Camera.h>
-#include <Engine/Grid.h>
 
 #define ENG_CLEAR_COLOR glm::fvec4(0.1f, 0.1f, 0.1f, 1.0f)
 
@@ -37,6 +36,6 @@ namespace eng
 		Window m_Window;
 		Camera m_Camera;
 
-		int balance = 10000; //licznik pieniedzy
+		int balance = 100; //licznik pieniedzy
 	};
 }
