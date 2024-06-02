@@ -180,9 +180,9 @@ namespace eng
 				rightKeyPressed = false;
 
 
-			if (sunRotationAngle >= 2 * 3.14159) 
+			if (sunRotationAngle >= 2 * 3.14159f)
 			{
-				sunRotationAngle = 0.0f;
+				sunRotationAngle -= 2 * 3.14159f;
 				daysPassed++;
 				balance += shopIncome + buildingIncome + blockIncome + pyramidIncome;
 			}

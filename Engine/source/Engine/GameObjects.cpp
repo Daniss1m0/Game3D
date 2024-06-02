@@ -45,7 +45,7 @@ namespace eng
 				stbi_image_free(bytes);
 			}
 			std::cerr << e.what() << std::endl;
-			throw; // Rethrow the exception to be handled by the calling code
+			throw;
 		}
 	}
 
