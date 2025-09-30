@@ -17,7 +17,10 @@
 - **ImGui** – interfejs użytkownika
 - **Własny Engine** – renderowanie sceny i logika gry
 
+## Dokumentacja
+
+![Dokumentacja](./PGK2_14A_DUNYTSKYI_KOZIEL_ORZEL_DOC.pdf)
+
 ## Screenshots
 
-![Gameplay](./docs/screenshot1.png)
-![UI](./docs/screenshot2.png)
+![Gameplay](./Screen1.png)
